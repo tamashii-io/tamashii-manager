@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+require 'rack'
+require 'optparse'
+require 'codeme/manager/version'
+require 'codeme/manager/handler'
+
+options = {
+  Port: ENV['PORT'] || 3000,
+  Host: "0.0.0.0",
+  AccessLog: []
+}
+
+OptionParser.new do |opts|
+  opts.on("-v", "--version", "Display Codeme::Manager version") {
+    puts "Codeme::Manager #{AmberBot::VERSION}"
+    exit
+  }
+
+  opts.on("-h", "--help") {
+    puts opts
+    exit
+  }
+
+  opts.separator ""
+  opts.on("-s", "--server SERVER", "Run Codeme::Manager server") { |name| handlers.unshift(name.to_s) }
+  opts.on("-o", "--host HOST", "The listen on HOST (default: 0.0.0.0)") { |host| options[:Host] = host.to_s; puts host }
+  opts.on("-p", "--port PORT", "The listen on PORT (default: 3000)") { |port| options[:Port] = port.to_i }
+
+  opts.parse! ARGV
+end
+
+begin
+  Rack::Handler.default.run Codeme::Manager::Handler, options
+rescue LoadError => e
+  # TODO: Improve error message
+  puts e
+end
