@@ -3,7 +3,7 @@
 require 'rack'
 require 'optparse'
 require 'codeme/manager/version'
-require 'codeme/manager/handler'
+require 'codeme/manager/server'
 
 options = {
   Port: ENV['PORT'] || 3000,
@@ -31,7 +31,7 @@ OptionParser.new do |opts|
 end
 
 begin
-  Rack::Handler.default.run Codeme::Manager::Handler, options
+  Rack::Handler.default.run Codeme::Manager::Server, options
 rescue LoadError => e
   # TODO: Improve error message
   puts e
