@@ -2,12 +2,14 @@ require "websocket/driver"
 require "nio"
 
 require "codeme/manager/stream"
+require "codeme/manager/channel"
 require "codeme/common"
 
 module Codeme
   module Manager
     class Client
       attr_reader :env, :url
+      attr_accessor :tag
 
       def initialize(env)
         @env = env
@@ -24,6 +26,9 @@ module Codeme
         Connection.register(self)
         @stream = Stream.register(@io, self)
 
+        # TODO: Move to auth stage to do this
+        Channel.subscribe(self)
+
         @driver.on(:open)    { |e| open }
         @driver.on(:message) { |e| receive(e.data) }
         @driver.on(:close)   { |e| close(e) }
@@ -36,6 +41,10 @@ module Codeme
         @io.write(buffer)
       end
 
+      def send(packet)
+        @driver.binary(packet)
+      end
+
       def parse(buffer)
         @driver.parse(buffer)
       end
@@ -45,11 +54,12 @@ module Codeme
       end
 
       def receive(data)
-        @driver.text(data)
+        Channel.get(@tag).broadcast(data)
       end
 
       def close(e)
         Connection.unregister(self)
+        Channel.unsubscribe(self)
         @stream.close
       end
 

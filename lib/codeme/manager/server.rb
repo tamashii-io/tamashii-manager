@@ -28,6 +28,7 @@ module Codeme
       end
 
       def initialize
+        Channel.init
         Stream.run
       end
 
