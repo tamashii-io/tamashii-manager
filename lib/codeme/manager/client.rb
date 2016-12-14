@@ -2,10 +2,11 @@ require "websocket/driver"
 require "nio"
 
 require "codeme/manager/stream"
+require "codeme/common"
 
 module Codeme
   module Manager
-    class Socket
+    class Client
       attr_reader :env, :url
 
       def initialize(env)
@@ -27,6 +28,7 @@ module Codeme
 
         @driver.on :message do |event|
           puts "Receive: #{event.data}"
+          @driver.binary(event.data)
         end
 
         @driver.start

@@ -1,7 +1,7 @@
 require "json"
 require "websocket/driver"
 
-require "codeme/manager/socket"
+require "codeme/manager/client"
 require "codeme/manager/stream"
 
 module Codeme
@@ -32,7 +32,7 @@ module Codeme
 
       def call(env)
         if WebSocket::Driver.websocket?(env)
-          Socket.new(env)
+          Client.new(env)
         else
 
           # TODO: Handle HTTP API
