@@ -1,11 +1,16 @@
 require "nio"
 
+require "codeme/manager/connection"
+
+Thread.abort_on_exception = true
+
 module Codeme
   module Manager
     class Stream
       class << self
-        def register(io)
-          @nio.register(io, :r)
+        attr_reader :nio
+        def register(io, client)
+          new(io, client)
         end
 
         def run
@@ -16,12 +21,28 @@ module Codeme
         def process
           loop do
             # TODO: Prevent non-block process
-            next unless monitors = @nio.select(0)
+            next unless Connection.available?
+            next unless monitors = @nio.select
             monitors.each do |monitor|
-              monitor.value.call
+              monitor.value.parse
             end
           end
         end
+      end
+
+      def initialize(io, client)
+        @io = io
+        @client = client
+        @monitor = Stream.nio.register(io, :r)
+        @monitor.value = self
+      end
+
+      def parse
+        @client.parse(@monitor.io.recv_nonblock(4096))
+      end
+
+      def close
+        @monitor.close
       end
     end
   end

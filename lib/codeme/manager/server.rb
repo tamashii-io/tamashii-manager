@@ -1,4 +1,5 @@
 require "json"
+require "securerandom"
 require "websocket/driver"
 
 require "codeme/manager/client"

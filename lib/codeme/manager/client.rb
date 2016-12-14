@@ -21,21 +21,39 @@ module Codeme
         env['rack.hijack'].call
         @io = env['rack.hijack_io']
 
-        monitor = Stream.register(@io)
-        monitor.value = proc {
-          @driver.parse(monitor.io.read_nonblock(4096))
-        }
+        Connection.register(self)
+        @stream = Stream.register(@io, self)
 
-        @driver.on :message do |event|
-          puts "Receive: #{event.data}"
-          @driver.binary(event.data)
-        end
+        @driver.on(:open)    { |e| open }
+        @driver.on(:message) { |e| receive(e.data) }
+        @driver.on(:close)   { |e| close(e) }
+        @driver.on(:error)   { |e| emit_error(e.message) }
 
         @driver.start
       end
 
       def write(buffer)
         @io.write(buffer)
+      end
+
+      def parse(buffer)
+        @driver.parse(buffer)
+      end
+
+      private
+      def open
+      end
+
+      def receive(data)
+        @driver.text(data)
+      end
+
+      def close(e)
+        Connection.unregister(self)
+        @stream.close
+      end
+
+      def emit_error(message)
       end
     end
   end
