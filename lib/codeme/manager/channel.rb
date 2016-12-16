@@ -28,7 +28,7 @@ module Codeme
           client.tag = channel.id
           @channels[channel.id] = channel
 
-          Logger.info("Client #{client.env['REMOTE_ADDR']} subscribe to Channel ##{channel.id}")
+          Logger.info("Client #{client.id} subscribe to Channel ##{channel.id}")
 
           channel
         end
@@ -37,7 +37,7 @@ module Codeme
           channel = @channels[client.tag]
           channel.delete(client)
 
-          Logger.info("Client #{client.env['REMOTE_ADDR']} unsubscribe to Channel ##{channel.id}")
+          Logger.info("Client #{client.id} unsubscribe to Channel ##{channel.id}")
 
           if channel.empty?
             @channels.delete(channel.id)

@@ -1,5 +1,5 @@
 require "codeme/manager/version"
-require "codeme/manager/configuration"
+require "codeme/manager/config"
 require "codeme/manager/logger"
 
 module Codeme
