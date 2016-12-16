@@ -13,6 +13,11 @@ module Codeme
         return @token if token.nil?
         @token = token.to_s
       end
+
+      def self.log_file(path = nil)
+        return @log_file ||= STDOUT if path.nil?
+        @log_file = path.to_s
+      end
     end
   end
 end
