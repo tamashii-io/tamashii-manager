@@ -30,6 +30,8 @@ module Codeme
       def initialize
         Channel.init
         Stream.run
+
+        Logger.info("Server is created, read for accept connection")
       end
 
       def call(env)
