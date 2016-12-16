@@ -4,6 +4,7 @@ require 'rack'
 require 'optparse'
 require 'codeme/manager/version'
 require 'codeme/manager/server'
+require 'codeme/manager'
 
 options = {
   Port: ENV['PORT'] || 3000,
@@ -26,13 +27,20 @@ OptionParser.new do |opts|
   opts.on("-s", "--server SERVER", "Run Codeme::Manager server") { |name| handlers.unshift(name.to_s) }
   opts.on("-o", "--host HOST", "The listen on HOST (default: 0.0.0.0)") { |host| options[:Host] = host.to_s; puts host }
   opts.on("-p", "--port PORT", "The listen on PORT (default: 3000)") { |port| options[:Port] = port.to_i }
+  opts.on("-C", "--config FILE", "The external configuration file") { |config| require File.join(Dir.pwd, config) }
 
   opts.parse! ARGV
 end
 
 begin
+  config = Codeme::Manager::Config
+  case config.auth_type
+  when :token
+    raise LoadError.new("Token authorization require to set token") if config.token.nil?
+  end
+
   Rack::Handler.default.run Codeme::Manager::Server, options
 rescue LoadError => e
   # TODO: Improve error message
-  puts e
+  STDERR.puts e
 end
