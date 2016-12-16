@@ -6,6 +6,7 @@ module Codeme
     class Authorization
       module TYPE
         TOKEN = 010
+        RESPONSE = 017
       end
 
       def initialize(type, raw_data)

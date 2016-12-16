@@ -1,6 +1,7 @@
 require "nio"
 
 require "codeme/manager/connection"
+require "codeme/manager/logger"
 
 Thread.abort_on_exception = true
 
@@ -22,7 +23,7 @@ module Codeme
           loop do
             # TODO: Prevent non-block process
             next unless Connection.available?
-            next unless monitors = @nio.select
+            next unless monitors = @nio.select(0)
             monitors.each do |monitor|
               monitor.value.parse
             end
