@@ -2,6 +2,7 @@ require 'spec_helper'
 
 require 'codeme/manager/server'
 require 'codeme/manager/client'
+require 'codeme/manager/stream'
 
 RSpec.describe Codeme::Manager::Server do
   let :env do
@@ -13,6 +14,11 @@ RSpec.describe Codeme::Manager::Server do
       "HTTP_SEC_WEBSOCKET_KEY"     => "JFBCWHksyIpXV+6Wlq/9pw==",
       "HTTP_SEC_WEBSOCKET_VERSION" => "13",
     }
+  end
+
+  before do
+    # Prevent start thread
+    expect(Codeme::Manager::Stream).to receive(:run).and_return(nil)
   end
 
   it "starts http request" do

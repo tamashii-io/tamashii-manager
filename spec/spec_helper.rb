@@ -1,6 +1,10 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "codeme/manager"
+
 require 'rack/test'
+require 'simplecov'
+
+SimpleCov.start
 
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
