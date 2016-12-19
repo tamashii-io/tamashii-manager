@@ -14,7 +14,7 @@ options = {
 
 OptionParser.new do |opts|
   opts.on("-v", "--version", "Display Codeme::Manager version") {
-    puts "Codeme::Manager #{AmberBot::VERSION}"
+    puts "Codeme::Manager #{Codeme::Manager::VERSION}"
     exit
   }
 
