@@ -92,9 +92,10 @@ module Codeme
         packet = Codeme::Packet.load(data)
         @id = Authorization.new(packet.type, packet.body).authorize!
         @channel = Channel.subscribe(self) if authorized?
-        send(Codeme::Packet.new(Authorization::TYPE::RESPONSE, @channel.id, @channel.id.to_s).dump)
+        send(Codeme::Packet.new(Authorization::TYPE::RESPONSE, @channel.id, true).dump)
       rescue AuthorizationError => e
         Logger.error("Client #{@id} authentication failed => #{e.message}")
+        send(Codeme::Packet.new(Authorization::TYPE::RESPONSE, 0, false).dump)
         @driver.close
       end
     end

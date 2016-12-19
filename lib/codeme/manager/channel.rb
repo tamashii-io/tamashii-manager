@@ -1,32 +1,23 @@
+require 'codeme/manager/channel_pool'
+
 module Codeme
   module Manager
     class Channel < Set
       class << self
-        def init(pool_size = 2)
-          @empty_channel ||= []
-          @channels = {}
-          @counter = 1
-
-          pool_size.times {
-            @empty_channel << Channel.new(@counter)
-            @counter += 1
-          }
+        def pool
+          @pool ||= ChannelPool.new
         end
 
         def get(id)
-          @channels[id]
+          pool[id]
         end
 
         def subscribe(client)
-          channel = Channel.last_empty
-          if channel.nil?
-            channel = Channel.new(@counter)
-            @counter += 1
-          end
-
+          channel = pool.get_idle! || pool.create!
           channel.add(client)
           client.tag = channel.id
-          @channels[channel.id] = channel
+
+          pool.ready(channel)
 
           Logger.info("Client #{client.id} subscribe to Channel ##{channel.id}")
 
@@ -34,25 +25,15 @@ module Codeme
         end
 
         def unsubscribe(client)
-          channel = @channels[client.tag]
+          channel = pool[client.tag]
           channel.delete(client)
 
           Logger.info("Client #{client.id} unsubscribe to Channel ##{channel.id}")
 
           if channel.empty?
-            @channels.delete(channel.id)
-            @empty_channel << channel
-            Logger.debug("Channel Pool add - ##{channel.id}, available channels: #{@empty_channel.size}")
+            pool.idle(channel.id)
+            Logger.debug("Channel Pool add - ##{channel.id}, available channels: #{pool.idle.size}")
           end
-        end
-
-        def last_empty
-          return if !available?
-          @empty_channel.shift
-        end
-
-        def available?
-          !@empty_channel.empty?
         end
       end
 

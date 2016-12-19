@@ -45,10 +45,10 @@ module Codeme
       end
 
       def format_message(level, *args)
-        if Logger::Colors::SCHEMA[@logdev.dev][Logger.const_get(level.sub "ANY", "UNKNOWN")].to_s.upcase
+        if schema[Logger.const_get(level.sub "ANY", "UNKNOWN")].to_s.upcase
           color = begin
                     Logger::Colors.const_get \
-                      Logger::Colors::SCHEMA[@logdev.dev][Logger.const_get(level.sub "ANY", "UNKNOWN")].to_s.upcase
+                      schema[Logger.const_get(level.sub "ANY", "UNKNOWN")].to_s.upcase
           rescue NameError
             "0;0"
           end
@@ -56,6 +56,10 @@ module Codeme
         else
           format_message_colorless(level, *args)
         end
+      end
+
+      def schema
+        Logger::Colors::SCHEMA[@logdev.dev] || Logger::Colors::SCHEMA[STDOUT]
       end
     end
   end
