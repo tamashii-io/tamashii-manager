@@ -13,10 +13,10 @@ module Codeme
           @authorized = false
         end
 
-        def verify(data)
+        def verify!(data)
           @client_id, token = data.split(",")
           Logger.debug("Client #{@client_id} try to verify token: #{token}")
-          @authorized = Config.token == token
+          raise AuthorizationError.new("Token mismatch!") unless @authorized = Config.token == token
         end
       end
     end

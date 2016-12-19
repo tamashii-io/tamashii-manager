@@ -4,7 +4,7 @@ require "codeme/manager/authorizator/token"
 module Codeme
   module Manager
     class Authorization
-      module TYPE
+      module Type
         TOKEN = 010
         RESPONSE = 017
       end
@@ -14,21 +14,19 @@ module Codeme
         @raw_data = raw_data
       end
 
+      def authorize!
+        authorizator = @authorize_method.new
+        authorizator.verify!(@raw_data)
+        authorizator.client_id
+      end
+
+      private
       def from_authorizator_type(type)
         case type
-        when TYPE::TOKEN
+        when Type::TOKEN
           Authorizator::Token
         else
           raise AuthorizationError.new("Invalid authorization type.")
-        end
-      end
-
-      def authorize!
-        authoritor = @authorize_method.new
-        if authoritor.verify(@raw_data)
-          authoritor.client_id
-        else
-          raise AuthorizationError.new("Token mismatch.")
         end
       end
     end
