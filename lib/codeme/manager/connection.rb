@@ -1,19 +1,21 @@
 module Codeme
   module Manager
-    class Connection
+    class Connection < Set
       class << self
+        def instance
+          @instance ||= Connection.new
+        end
+
         def register(client)
-          @connections ||= []
-          @connections << client
+          instance.add(client)
         end
 
         def unregister(client)
-          @connections.delete(client)
+          instance.delete(client)
         end
 
         def available?
-          @connections ||= []
-          !@connections.empty?
+          !instance.empty?
         end
       end
     end
