@@ -13,7 +13,7 @@ module Codeme
         end
 
         def subscribe(client)
-          channel = pool.get_idle! || pool.create!
+          channel = pool.get_idle || pool.create!
           channel.add(client)
           client.tag = channel.id
 

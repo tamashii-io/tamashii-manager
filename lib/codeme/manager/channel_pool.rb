@@ -7,14 +7,7 @@ module Codeme
         @idle = []
         @ptr = 1
 
-        size.times {
-          @idle << Channel.new(@ptr)
-          @ptr += 1
-        }
-      end
-
-      def get(id)
-        self[id]
+        size.times { create! }
       end
 
       def create!
@@ -24,21 +17,26 @@ module Codeme
 
       def idle(channel_id = nil)
         return @idle if channel_id.nil?
-        return unless self[channel_id].empty?
+        return unless self[channel_id]&.empty?
         @idle << self[channel_id]
         self[channel_id] = nil
       end
 
       def ready(channel)
+        return if channel.empty?
         self[channel.id] = channel
+        if @idle.include?(channel)
+          @idle.delete(channel)
+        end
+        channel
       end
 
       def available?
         !@idle.empty?
       end
 
-      def get_idle!
-        @idle.shift
+      def get_idle
+        @idle.first
       end
     end
   end
