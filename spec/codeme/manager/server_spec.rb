@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'codeme/manager/server'
 require 'codeme/manager/client'
-require 'codeme/manager/stream'
+require 'codeme/manager/stream_event_loop'
 
 RSpec.describe Codeme::Manager::Server do
   let :env do
@@ -16,9 +16,12 @@ RSpec.describe Codeme::Manager::Server do
     }
   end
 
+  let(:client) { double(Codeme::Manager::Client) }
+  let(:event_loop) { double(Codeme::Manager::StreamEventLoop) }
+
   before do
     # Prevent start thread
-    expect(Codeme::Manager::Stream).to receive(:run).and_return(nil)
+    expect(Codeme::Manager::StreamEventLoop).to receive(:new).and_return(event_loop)
   end
 
   it "starts http request" do
@@ -29,7 +32,7 @@ RSpec.describe Codeme::Manager::Server do
 
   it "starts websocket request" do
     request = Rack::MockRequest.env_for("/", env)
-    expect(Codeme::Manager::Client).to receive(:new).with(request).and_return(double(Codeme::Manager::Client))
+    expect(Codeme::Manager::Client).to receive(:new).with(request, event_loop).and_return(client)
     subject.call(request)
   end
 

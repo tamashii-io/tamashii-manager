@@ -4,6 +4,7 @@ require "websocket/driver"
 
 require "codeme/manager/client"
 require "codeme/manager/stream"
+require "codeme/manager/stream_event_loop"
 
 module Codeme
   module Manager
@@ -28,14 +29,14 @@ module Codeme
       end
 
       def initialize
-        Stream.run
+        @event_loop = StreamEventLoop.new
 
         Logger.info("Server is created, read for accept connection")
       end
 
       def call(env)
         if WebSocket::Driver.websocket?(env)
-          Client.new(env)
+          Client.new(env, @event_loop)
         else
 
           # TODO: Handle HTTP API

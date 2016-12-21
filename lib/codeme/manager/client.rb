@@ -12,7 +12,7 @@ module Codeme
       attr_reader :env, :url
       attr_accessor :tag
 
-      def initialize(env)
+      def initialize(env, event_loop)
         @env = env
         @id = nil
 
@@ -28,7 +28,7 @@ module Codeme
         @io = env['rack.hijack_io']
 
         Connection.register(self)
-        @stream = Stream.register(@io, self)
+        @stream = Stream.new(event_loop, @io, self)
 
         # TODO: Move to auth stage to do this
 
