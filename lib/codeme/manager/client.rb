@@ -78,24 +78,24 @@ module Codeme
       end
 
       def close(e)
-        Logger.info("Client #{@id} closed connection")
+        Logger.info("Client #{id} closed connection")
         Connection.unregister(self)
-        Channel.unsubscribe(self)
+        Channel.unsubscribe(self) if authorized?
         @stream.close
       end
 
       def emit_error(message)
-        Logger.error("Client #{@id} has error => #{message}")
+        Logger.error("Client #{id} has error => #{message}")
       end
 
       def verify_client(data)
         packet = Codeme::Packet.load(data)
         @id = Authorization.new(packet.type, packet.body).authorize!
         @channel = Channel.subscribe(self) if authorized?
-        send(Codeme::Packet.new(Authorization::TYPE::RESPONSE, @channel.id, true).dump)
+        send(Codeme::Packet.new(Authorization::Type::RESPONSE, @channel.id, "1").dump)
       rescue AuthorizationError => e
-        Logger.error("Client #{@id} authentication failed => #{e.message}")
-        send(Codeme::Packet.new(Authorization::TYPE::RESPONSE, 0, false).dump)
+        Logger.error("Client #{id} authentication failed => #{e.message}")
+        send(Codeme::Packet.new(Authorization::Type::RESPONSE, 0, "0").dump)
         @driver.close
       end
     end

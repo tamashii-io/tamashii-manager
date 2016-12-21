@@ -18,7 +18,6 @@ module Codeme
       end
 
       def close
-        @client.close
       end
     end
   end

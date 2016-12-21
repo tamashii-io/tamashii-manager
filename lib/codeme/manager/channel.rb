@@ -26,7 +26,6 @@ module Codeme
 
         def unsubscribe(client)
           channel = pool[client.tag]
-          p pool
           channel.delete(client)
 
           Logger.info("Client #{client.id} unsubscribe to Channel ##{channel.id}")
