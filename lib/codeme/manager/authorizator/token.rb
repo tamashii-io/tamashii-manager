@@ -15,6 +15,7 @@ module Codeme
 
         def verify!(data)
           @client_id, token = data.split(",")
+          token = "FILTERED" if Config.env.production?
           Logger.debug("Client #{@client_id} try to verify token: #{token}")
           raise AuthorizationError.new("Token mismatch!") unless @authorized = Config.token == token
         end

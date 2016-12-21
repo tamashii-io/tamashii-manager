@@ -30,8 +30,6 @@ module Codeme
         Connection.register(self)
         @stream = Stream.new(event_loop, @io, self)
 
-        # TODO: Move to auth stage to do this
-
         @driver.on(:open)    { |e| open }
         @driver.on(:message) { |e| receive(e.data) }
         @driver.on(:close)   { |e| close(e) }
@@ -63,11 +61,11 @@ module Codeme
 
       private
       def open
-        Logger.info("Client #{@id} is ready")
+        Logger.info("Client #{id} is ready")
       end
 
       def receive(data)
-        Logger.debug("Receive Data: #{data}")
+        Logger.info("Receive Data: #{data}")
         return unless data.is_a?(Array)
 
         if authorized?

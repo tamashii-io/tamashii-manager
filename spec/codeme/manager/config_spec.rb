@@ -49,4 +49,28 @@ RSpec.describe Codeme::Manager::Config do
     end
   end
 
+  describe ".env" do
+    it "default is development" do
+      expect(subject.env.development?).to be true
+    end
+
+    it "load config from environment variable" do
+      expect(ENV).to receive(:[]).with('RACK_ENV').and_return("production")
+      expect(subject.env.production?).to be true
+    end
+
+    it "can be set by config" do
+      subject.env(:production)
+      expect(subject.env.production?).to be true
+    end
+
+    it "can compare by string" do
+      expect(subject.env).to eq("development")
+    end
+
+    it "can compare by symbol" do
+      expect(subject.env).to eq(:development)
+    end
+  end
+
 end
