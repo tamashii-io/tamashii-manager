@@ -25,7 +25,7 @@ module Codeme
       end
 
       def log_file(path = nil)
-        return @log_file ||= STDOUT if path.nil?
+        return @log_file ||= STDOUT if @log_file || path.nil?
         @log_file = path.to_s
       end
 

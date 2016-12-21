@@ -31,7 +31,8 @@ RSpec.describe Codeme::Manager::Config do
     end
 
     it "cannot be changed after defined" do
-      log_file = Tempfile.new
+      log_file = Tempfile.new.path
+      subject.log_file
       subject.log_file(log_file)
       expect(subject.log_file).not_to eq(log_file)
     end
