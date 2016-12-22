@@ -40,11 +40,6 @@ module Codeme
         Manager.logger.level = level
       end
 
-      def env(env = nil)
-        return Env.new(self[:env]) if env.nil?
-        self[:env] = env.to_s
-      end
-
     end
   end
 end
