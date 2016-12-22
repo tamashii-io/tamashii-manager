@@ -51,8 +51,8 @@ module Codeme
       end
 
       def log_level(level = nil)
-        return Logger.level if level.nil?
-        Logger.level = level
+        return Manager.logger.level if level.nil?
+        Manager.logger.level = level
       end
 
       def env(env = nil)

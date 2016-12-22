@@ -31,7 +31,7 @@ module Codeme
       def initialize
         @event_loop = StreamEventLoop.new
 
-        Logger.info("Server is created, read for accept connection")
+        Manager.logger.info("Server is created, read for accept connection")
       end
 
       def call(env)

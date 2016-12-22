@@ -19,7 +19,7 @@ module Codeme
 
           pool.ready(channel)
 
-          Logger.info("Client #{client.id} subscribe to Channel ##{channel.id}")
+          Manager.logger.info("Client #{client.id} subscribe to Channel ##{channel.id}")
 
           channel
         end
@@ -28,11 +28,11 @@ module Codeme
           channel = pool[client.tag]
           channel.delete(client)
 
-          Logger.info("Client #{client.id} unsubscribe to Channel ##{channel.id}")
+          Manager.logger.info("Client #{client.id} unsubscribe to Channel ##{channel.id}")
 
           if channel.empty?
             pool.idle(channel.id)
-            Logger.debug("Channel Pool add - ##{channel.id}, available channels: #{pool.idle.size}")
+            Manager.logger.debug("Channel Pool add - ##{channel.id}, available channels: #{pool.idle.size}")
           end
         end
       end
@@ -45,7 +45,7 @@ module Codeme
       end
 
       def broadcast(packet)
-        Logger.info("Broadcast \"#{packet}\" to Channel ##{@id}")
+        Manager.logger.info("Broadcast \"#{packet}\" to Channel ##{@id}")
         each do |client|
           client.send(packet)
         end

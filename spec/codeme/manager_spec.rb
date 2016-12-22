@@ -1,7 +1,7 @@
 require "spec_helper"
 
+require "codeme/common"
 require "codeme/manager/config"
-require "codeme/manager/logger"
 
 describe Codeme::Manager do
   it "has a version number" do
@@ -13,6 +13,6 @@ describe Codeme::Manager do
   end
 
   it "can get logger" do
-    expect(Codeme::Manager.logger).to be_instance_of(Codeme::Manager::Logger)
+    expect(Codeme::Manager.logger).to be_instance_of(Codeme::Logger)
   end
 end

@@ -1,7 +1,6 @@
 require "nio"
 
 require "codeme/manager/connection"
-require "codeme/manager/logger"
 
 Thread.abort_on_exception = true
 

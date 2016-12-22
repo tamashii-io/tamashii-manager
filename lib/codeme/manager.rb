@@ -1,6 +1,6 @@
 require "codeme/manager/version"
 require "codeme/manager/config"
-require "codeme/manager/logger"
+require "codeme/common"
 
 module Codeme
   module Manager
@@ -10,7 +10,7 @@ module Codeme
     end
 
     def self.logger
-      @logger ||= Logger.new(Config.log_file)
+      @logger ||= Codeme::Logger.new(Config.log_file)
     end
   end
 end

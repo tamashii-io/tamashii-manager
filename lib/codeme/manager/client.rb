@@ -20,7 +20,7 @@ module Codeme
         scheme = secure ? 'wss:' : 'ws:'
         @url = "#{scheme}//#{env['HTTP_HOST']}#{env['REQUEST_URI']}"
 
-        Logger.info("Accept connection from #{env['REMOTE_ADDR']}")
+        Manager.logger.info("Accept connection from #{env['REMOTE_ADDR']}")
 
         @driver = WebSocket::Driver.rack(self)
 
@@ -61,11 +61,11 @@ module Codeme
 
       private
       def open
-        Logger.info("Client #{id} is ready")
+        Manager.logger.info("Client #{id} is ready")
       end
 
       def receive(data)
-        Logger.info("Receive Data: #{data}")
+        Manager.logger.info("Receive Data: #{data}")
         return unless data.is_a?(Array)
 
         if authorized?
@@ -76,14 +76,14 @@ module Codeme
       end
 
       def close(e)
-        Logger.info("Client #{id} closed connection")
+        Manager.logger.info("Client #{id} closed connection")
         Connection.unregister(self)
         Channel.unsubscribe(self) if authorized?
         @stream.close
       end
 
       def emit_error(message)
-        Logger.error("Client #{id} has error => #{message}")
+        Manager.logger.error("Client #{id} has error => #{message}")
       end
 
       def verify_client(data)
@@ -92,7 +92,7 @@ module Codeme
         @channel = Channel.subscribe(self) if authorized?
         send(Codeme::Packet.new(Authorization::Type::RESPONSE, @channel.id, "1").dump)
       rescue AuthorizationError => e
-        Logger.error("Client #{id} authentication failed => #{e.message}")
+        Manager.logger.error("Client #{id} authentication failed => #{e.message}")
         send(Codeme::Packet.new(Authorization::Type::RESPONSE, 0, "0").dump)
         @driver.close
       end
