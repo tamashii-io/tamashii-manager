@@ -29,13 +29,6 @@ RSpec.describe Codeme::Manager::Config do
     it "default output to STDOUT" do
       expect(subject.log_file).to eq(STDOUT)
     end
-
-    it "cannot be changed after defined" do
-      log_file = Tempfile.new.path
-      subject.log_file
-      subject.log_file(log_file)
-      expect(subject.log_file).not_to eq(log_file)
-    end
   end
 
   describe ".log_level" do

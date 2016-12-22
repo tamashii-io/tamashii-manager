@@ -1,6 +1,8 @@
+require 'codeme/common'
+
 module Codeme
   module Manager
-    class Config
+    class Config < Codeme::Config
       AUTH_TYPES = [:none, :token]
       APPLICATION_MODE = [:test, :development, :production]
 
@@ -24,30 +26,13 @@ module Codeme
         end
       end
 
-      class << self
-        def instance
-          @instance ||= Config.new
-        end
-
-        def method_missing(name, *args, &block)
-          instance.send(name, *args, &block)
-        end
-      end
+      register :auth_type, :none
+      register :log_file, STDOUT
 
       def auth_type(type = nil)
-        return @auth_type ||= :none if type.nil?
+        return self[:auth_type] if type.nil?
         return unless AUTH_TYPES.include?(type)
-        @auth_type = type.to_sym
-      end
-
-      def token(token = nil)
-        return @token if token.nil?
-        @token = token.to_s
-      end
-
-      def log_file(path = nil)
-        return @log_file ||= STDOUT if @log_file || path.nil?
-        @log_file = path.to_s
+        self[:auth_type] = type
       end
 
       def log_level(level = nil)
@@ -56,9 +41,10 @@ module Codeme
       end
 
       def env(env = nil)
-        return Env.new(@env) if env.nil?
-        @env = env.to_s
+        return Env.new(self[:env]) if env.nil?
+        self[:env] = env.to_s
       end
+
     end
   end
 end
