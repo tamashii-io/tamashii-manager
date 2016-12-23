@@ -1,8 +1,10 @@
 require "codeme/manager/version"
 require "codeme/manager/config"
 require "codeme/manager/authorization"
+require "codeme/manager/handler/broadcaster"
 require "codeme/common"
 
+Codeme::Resolver.default_handler Codeme::Manager::Handler::Broadcaster
 Codeme::Resolver.handle Codeme::Type::AUTH_TOKEN, Codeme::Manager::Authorization
 
 module Codeme

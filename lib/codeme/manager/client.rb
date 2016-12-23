@@ -74,6 +74,7 @@ module Codeme
       def receive(data)
         Manager.logger.info("Receive Data: #{data}")
         return unless data.is_a?(Array)
+        return @channel.broadcast(data) if authorized?
         Codeme::Resolver.resolve(Codeme::Packet.load(data), client: self)
       rescue AuthorizationError => e
         Manager.logger.error("Client #{id} authentication failed => #{e.message}")

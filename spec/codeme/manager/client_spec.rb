@@ -3,6 +3,7 @@ require 'spec_helper'
 require 'codeme/common'
 require 'codeme/manager/stream_event_loop'
 require 'codeme/manager/client'
+require 'codeme/manager/channel'
 
 RSpec.describe Codeme::Manager::Client do
   let :env do
@@ -31,6 +32,7 @@ RSpec.describe Codeme::Manager::Client do
     allow(tcp_socket).to receive(:write) { |message| @bytes = message.bytes.to_a }
   end
 
+
   context "authorized" do
     let(:token) { SecureRandom.hex(16) }
     let(:device_id) { SecureRandom.hex(8) }
@@ -47,9 +49,21 @@ RSpec.describe Codeme::Manager::Client do
     describe "#authorized?" do
       it { expect(subject.authorized?).to be true }
     end
+
+    it "should broadcast message to channel" do
+      channel = Codeme::Manager::Channel.get(subject.tag)
+      expect(channel).to receive(:broadcast)
+      subject.parse(codeme_binary_packet(0, 0, "").pack('C*'))
+    end
   end
 
   context "not authorized" do
+
+    it "run resolver to authorization" do
+      expect(Codeme::Resolver).to receive(:resolve)
+      subject.parse(codeme_binary_packet(0, 0, "").pack('C*'))
+    end
+
     describe "#id" do
       it { expect(subject.id).to match(/Unauthorized/) }
     end
