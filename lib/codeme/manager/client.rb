@@ -1,6 +1,4 @@
 require "websocket/driver"
-require "nio"
-
 require "codeme/manager/stream"
 require "codeme/manager/channel"
 require "codeme/manager/authorization"
@@ -30,9 +28,9 @@ module Codeme
         Connection.register(self)
         @stream = Stream.new(event_loop, @io, self)
 
-        @driver.on(:open)    { |e| open }
+        @driver.on(:open)    { |e| on_open }
         @driver.on(:message) { |e| receive(e.data) }
-        @driver.on(:close)   { |e| close(e) }
+        @driver.on(:close)   { |e| on_close(e) }
         @driver.on(:error)   { |e| emit_error(e.message) }
 
         @driver.start
@@ -66,8 +64,17 @@ module Codeme
         send(Codeme::Packet.new(Codeme::Type::AUTH_RESPONSE, @channel.id, true).dump)
       end
 
+      def close
+        @driver.close
+      end
+
+      def shutdown
+        Connection.unregister(self)
+        Channel.unsubscribe(self) if authorized?
+      end
+
       private
-      def open
+      def on_open
         Manager.logger.info("Client #{id} is ready")
       end
 
@@ -82,10 +89,8 @@ module Codeme
         @driver.close
       end
 
-      def close(e)
+      def on_close(e)
         Manager.logger.info("Client #{id} closed connection")
-        Connection.unregister(self)
-        Channel.unsubscribe(self) if authorized?
         @stream.close
       end
 
