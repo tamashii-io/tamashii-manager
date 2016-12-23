@@ -1,33 +1,18 @@
 require "codeme/manager/errors/authorization_error"
 require "codeme/manager/authorizator/token"
+require "codeme/common"
 
 module Codeme
   module Manager
-    class Authorization
-      module Type
-        TOKEN = 010
-        RESPONSE = 017
-      end
-
-      def initialize(type, raw_data)
-        @authorize_method = from_authorizator_type(type)
-        @raw_data = raw_data
-      end
-
-      def authorize!
-        authorizator = @authorize_method.new
-        authorizator.verify!(@raw_data)
-        authorizator.client_id
-      end
-
-      private
-      def from_authorizator_type(type)
-        case type
-        when Type::TOKEN
-          Authorizator::Token
-        else
-          raise AuthorizationError.new("Invalid authorization type.")
-        end
+    class Authorization < Codeme::Handler
+      def resolve(data = nil)
+        client_id = case @type
+                    when Codeme::Type::AUTH_TOKEN
+                      Authorizator::Token.new.verify!(data)
+                    else
+                      raise AuthorizationError.new("Invalid authorization type.")
+                    end
+        @env[:client].accept(client_id)
       end
     end
   end

@@ -4,3 +4,4 @@ source 'https://rubygems.org'
 gemspec
 
 gem "codeme-common", git: "git@git.5xruby.tw:5xruby-codeme/codeme-common.git"
+

@@ -48,6 +48,7 @@ module Codeme
       end
 
       def send(packet)
+        packet = packet.dump if packet.is_a?(Codeme::Packet)
         @driver.binary(packet)
       end
 
@@ -59,6 +60,12 @@ module Codeme
         !@id.nil?
       end
 
+      def accept(id)
+        @id = id
+        @channel = Channel.subscribe(self)
+        send(Codeme::Packet.new(Codeme::Type::AUTH_RESPONSE, @channel.id, true).dump)
+      end
+
       private
       def open
         Manager.logger.info("Client #{id} is ready")
@@ -67,12 +74,11 @@ module Codeme
       def receive(data)
         Manager.logger.info("Receive Data: #{data}")
         return unless data.is_a?(Array)
-
-        if authorized?
-          @channel.broadcast(data)
-        else
-          verify_client(data)
-        end
+        Codeme::Resolver.resolve(Codeme::Packet.load(data), client: self)
+      rescue AuthorizationError => e
+        Manager.logger.error("Client #{id} authentication failed => #{e.message}")
+        send(Codeme::Packet.new(Codeme::Type::AUTH_RESPONSE, 0, false))
+        @driver.close
       end
 
       def close(e)
@@ -84,17 +90,6 @@ module Codeme
 
       def emit_error(message)
         Manager.logger.error("Client #{id} has error => #{message}")
-      end
-
-      def verify_client(data)
-        packet = Codeme::Packet.load(data)
-        @id = Authorization.new(packet.type, packet.body).authorize!
-        @channel = Channel.subscribe(self) if authorized?
-        send(Codeme::Packet.new(Authorization::Type::RESPONSE, @channel.id, "1").dump)
-      rescue AuthorizationError => e
-        Manager.logger.error("Client #{id} authentication failed => #{e.message}")
-        send(Codeme::Packet.new(Authorization::Type::RESPONSE, 0, "0").dump)
-        @driver.close
       end
     end
   end
