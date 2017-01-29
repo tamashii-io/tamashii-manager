@@ -39,7 +39,7 @@ RSpec.describe Codeme::Manager::Client do
 
     before do
       allow(Codeme::Manager::Config).to receive(:token).and_return(token)
-      subject.parse(codeme_binary_packet(Codeme::Type::AUTH_TOKEN, 0, "#{device_id},#{token}").pack('C*'))
+      subject.parse(codeme_binary_packet(Codeme::Type::AUTH_TOKEN, 0, "0,#{device_id},#{token}").pack('C*'))
     end
 
     describe "#id" do

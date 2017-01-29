@@ -3,6 +3,8 @@ require 'codeme/manager/channel_pool'
 module Codeme
   module Manager
     class Channel < Set
+      SERVER_ID = 0
+
       class << self
         def pool
           @pool ||= ChannelPool.new
@@ -12,8 +14,22 @@ module Codeme
           pool[id]
         end
 
+        def servers
+          @servers ||= Channel.new(SERVER_ID)
+        end
+
+        def select_channel(client)
+          case client.type
+          when :checkin
+            servers
+          else
+            return pool.get_idle || pool.create! if client.tag.nil?
+            pool[client.tag]
+          end
+        end
+
         def subscribe(client)
-          channel = pool.get_idle || pool.create!
+          channel = select_channel(client)
           channel.add(client)
           client.tag = channel.id
 
@@ -25,12 +41,12 @@ module Codeme
         end
 
         def unsubscribe(client)
-          channel = pool[client.tag]
+          channel = select_channel(client)
           channel.delete(client)
 
           Manager.logger.info("Client #{client.id} unsubscribe to Channel ##{channel.id}")
 
-          if channel.empty?
+          if channel.empty? && channel.id != SERVER_ID
             pool.idle(channel.id)
             Manager.logger.debug("Channel Pool add - ##{channel.id}, available channels: #{pool.idle.size}")
           end

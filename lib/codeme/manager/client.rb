@@ -7,12 +7,18 @@ require "codeme/common"
 module Codeme
   module Manager
     class Client
+      TYPES = {
+        agent:   0,
+        checkin: 1
+      }
+
       attr_reader :env, :url
       attr_accessor :tag
 
       def initialize(env, event_loop)
         @env = env
         @id = nil
+        @type = TYPES[:agent]
 
         secure = Rack::Request.new(env).ssl?
         scheme = secure ? 'wss:' : 'ws:'
@@ -41,6 +47,10 @@ module Codeme
         @id
       end
 
+      def type
+        TYPES.key(@type)
+      end
+
       def write(buffer)
         @io.write(buffer)
       end
@@ -58,8 +68,9 @@ module Codeme
         !@id.nil?
       end
 
-      def accept(id)
+      def accept(type, id)
         @id = id
+        @type = type
         @channel = Channel.subscribe(self)
         send(Codeme::Packet.new(Codeme::Type::AUTH_RESPONSE, @channel.id, true).dump)
       end

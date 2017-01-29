@@ -20,11 +20,11 @@ RSpec.describe Codeme::Manager::Authorization do
       let(:token) { SecureRandom.hex 16 }
       let(:device_id) { SecureRandom.hex 8 }
       let(:type) { Codeme::Type::AUTH_TOKEN }
-      let(:data) { "#{device_id},#{token}" }
+      let(:data) { "0,#{device_id},#{token}" }
 
       it "has valid token" do
         expect(Codeme::Manager::Config).to receive(:token).and_return(token)
-        expect(client).to receive(:accept).with(device_id)
+        expect(client).to receive(:accept).with(0, device_id)
         subject.resolve(data)
       end
 
