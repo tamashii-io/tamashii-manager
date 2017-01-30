@@ -23,7 +23,7 @@ module Codeme
           when :checkin
             servers
           else
-            return pool.get_idle || pool.create! if client.tag.nil?
+            return pool.get_idle || pool.create! if pool[client.tag].nil?
             pool[client.tag]
           end
         end
@@ -60,11 +60,24 @@ module Codeme
         @id = id
       end
 
-      def broadcast(packet)
+      def send_to(channel_id, packet)
+        return unless channel = Channel.pool[channel_id]
+        channel.broadcast(packet)
+      end
+
+      def broadcast(packet, exclude_server = false)
         Manager.logger.info("Broadcast \"#{packet}\" to Channel ##{@id}")
         each do |client|
           client.send(packet)
         end
+        Channel.servers.broadcast(packet) unless id == SERVER_ID || exclude_server
+      end
+
+      def broadcast_all(packet)
+        Channel.pool.each do |id, channel|
+          channel.broadcast(packet, true) unless channel.nil?
+        end
+        Channel.servers.broadcast(packet) unless id == SERVER_ID
       end
     end
   end
