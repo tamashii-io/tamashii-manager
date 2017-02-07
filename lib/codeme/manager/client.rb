@@ -9,6 +9,7 @@ module Codeme
     class Client
 
       attr_reader :env, :url
+      attr_reader :channel
       attr_accessor :tag
 
       def initialize(env, event_loop)
@@ -86,14 +87,15 @@ module Codeme
       end
 
       def receive(data)
-        Manager.logger.info("Receive Data: #{data}")
+        Manager.logger.debug("Receive Data: #{data}")
         return unless data.is_a?(Array)
-        return @channel.broadcast(data) if authorized?
         Codeme::Resolver.resolve(Codeme::Packet.load(data), client: self)
       rescue AuthorizationError => e
         Manager.logger.error("Client #{id} authentication failed => #{e.message}")
         send(Codeme::Packet.new(Codeme::Type::AUTH_RESPONSE, 0, false))
         @driver.close
+      rescue => e
+        Manager.logger.error("Error when receiving data from client #{id}: #{e.message}")
       end
 
       def on_close(e)
