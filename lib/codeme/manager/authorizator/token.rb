@@ -10,14 +10,14 @@ module Codeme
         def initialize
           @client_id = nil
           @authorized = false
-          @type = Manager::Client::TYPES[:agent]
+          @type = Type::CLIENT[:agent]
         end
 
         def verify!(data)
           @type, @client_id, token = data.split(",")
           Manager.logger.debug("Client #{@client_id} try to verify token: #{Config.env.production? ? "FILTERED" : token}")
           raise AuthorizationError.new("Token mismatch!") unless @authorized = Config.token == token
-          raise AuthorizationError.new("Device type not available!") unless Manager::Client::TYPES.values.include?(@type.to_i)
+          raise AuthorizationError.new("Device type not available!") unless Type::CLIENT.values.include?(@type.to_i)
           [@type.to_i, @client_id]
         end
       end
