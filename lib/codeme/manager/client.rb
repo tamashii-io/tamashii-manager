@@ -7,10 +7,6 @@ require "codeme/common"
 module Codeme
   module Manager
     class Client
-      TYPES = {
-        agent:   0,
-        checkin: 1
-      }
 
       attr_reader :env, :url
       attr_accessor :tag
@@ -18,7 +14,7 @@ module Codeme
       def initialize(env, event_loop)
         @env = env
         @id = nil
-        @type = TYPES[:agent]
+        @type = Type::CLIENT[:agent]
 
         secure = Rack::Request.new(env).ssl?
         scheme = secure ? 'wss:' : 'ws:'
@@ -48,7 +44,7 @@ module Codeme
       end
 
       def type
-        TYPES.key(@type)
+        Type::CLIENT.key(@type)
       end
 
       def write(buffer)
