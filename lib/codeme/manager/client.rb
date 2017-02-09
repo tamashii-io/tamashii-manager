@@ -96,6 +96,8 @@ module Codeme
         @driver.close
       rescue => e
         Manager.logger.error("Error when receiving data from client #{id}: #{e.message}")
+        Manager.logger.debug("Backtrace:")
+        e.backtrace.each {|msg| Manager.logger.debug(msg)}
       end
 
       def on_close(e)
