@@ -1,3 +1,4 @@
+require "codeme/manager/server"
 require "codeme/manager/version"
 require "codeme/manager/config"
 require "codeme/manager/authorization"
