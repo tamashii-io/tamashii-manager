@@ -3,6 +3,7 @@ require "codeme/manager/version"
 require "codeme/manager/config"
 require "codeme/manager/authorization"
 require "codeme/manager/handler/broadcaster"
+require "codeme/manager/clients"
 require "codeme/common"
 
 Codeme::Resolver.default_handler Codeme::Manager::Handler::Broadcaster

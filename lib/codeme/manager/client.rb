@@ -16,6 +16,10 @@ module Codeme
 
       attr_accessor :tag
 
+      def self.accepted_clients
+        Clients.instance
+      end
+
       def initialize(env, event_loop)
         @env = env
         @id = nil
@@ -75,6 +79,7 @@ module Codeme
         @id = id
         @type = type
         @channel = Channel.subscribe(self)
+        Clients.register(self)
         send(Codeme::Packet.new(Codeme::Type::AUTH_RESPONSE, @channel.id, true).dump)
       end
 
@@ -84,7 +89,10 @@ module Codeme
 
       def shutdown
         Connection.unregister(self)
-        Channel.unsubscribe(self) if authorized?
+        if authorized?
+          Channel.unsubscribe(self)
+          Clients.unregister(self)
+        end
       end
       
       def beat
