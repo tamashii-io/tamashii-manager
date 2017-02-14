@@ -7,6 +7,9 @@ Thread.abort_on_exception = true
 module Codeme
   module Manager
     class Stream
+      
+      attr_reader :event_loop
+
       def initialize(event_loop, io, client)
         @client = client
         @io = io

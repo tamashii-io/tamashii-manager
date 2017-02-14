@@ -30,8 +30,15 @@ module Codeme
 
       def initialize
         @event_loop = StreamEventLoop.new
+        setup_heartbeat_timer
 
         Manager.logger.info("Server is created, read for accept connection")
+      end
+
+      def setup_heartbeat_timer
+        @heartbeat_timer = @event_loop.timer(Config.heartbeat_interval) do
+          @event_loop.post { Connection.instance.map(&:beat) }
+        end
       end
 
       def call(env)

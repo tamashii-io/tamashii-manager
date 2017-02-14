@@ -7,6 +7,7 @@ module Codeme
 
       register :auth_type, :none
       register :log_file, STDOUT
+      register :heartbeat_interval, 3
 
       def auth_type(type = nil)
         return self[:auth_type] if type.nil?

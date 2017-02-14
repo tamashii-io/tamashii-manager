@@ -14,6 +14,15 @@ module Codeme
         @spawn_mutex = Mutex.new
       end
 
+      def timer(interval, &block)
+        Concurrent::TimerTask.new(execution_interval: interval, &block).tap(&:execute)
+      end
+
+      def post(task = nil, &block)
+        task ||= block
+        Concurrent.global_io_executor << task
+      end
+
       def attach(io, stream)
         @todo << lambda do
           @map[io] = @nio.register(io, :r)

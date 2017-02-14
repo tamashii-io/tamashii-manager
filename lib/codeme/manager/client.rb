@@ -10,12 +10,18 @@ module Codeme
 
       attr_reader :env, :url
       attr_reader :channel
+
+      attr_reader :last_beat_timestamp
+      attr_reader :last_response_time
+
       attr_accessor :tag
 
       def initialize(env, event_loop)
         @env = env
         @id = nil
         @type = Type::CLIENT[:agent]
+        @last_beat_timestamp = Time.at(0)
+        @last_response_time = Float::INFINITY
 
         secure = Rack::Request.new(env).ssl?
         scheme = secure ? 'wss:' : 'ws:'
@@ -79,6 +85,19 @@ module Codeme
       def shutdown
         Connection.unregister(self)
         Channel.unsubscribe(self) if authorized?
+      end
+      
+      def beat
+        beat_time = Time.now
+        @driver.ping("heart-beat-at-#{beat_time}") do
+          heartbeat_callback(beat_time)
+        end
+      end
+
+      def heartbeat_callback(beat_time)
+        @last_beat_timestamp = Time.now
+        @last_response_time = @last_beat_timestamp - beat_time
+        Manager.logger.debug "Heart beat #{beat_time} returns at #{@last_beat_timestamp}! Delay: #{(@last_response_time * 1000).round} ms" 
       end
 
       private
