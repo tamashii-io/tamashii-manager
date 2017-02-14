@@ -97,7 +97,7 @@ module Codeme
       def heartbeat_callback(beat_time)
         @last_beat_timestamp = Time.now
         @last_response_time = @last_beat_timestamp - beat_time
-        Manager.logger.debug "Heart beat #{beat_time} returns at #{@last_beat_timestamp}! Delay: #{(@last_response_time * 1000).round} ms" 
+        Manager.logger.debug "[#{@id}] Heart beat #{beat_time} returns at #{@last_beat_timestamp}! Delay: #{(@last_response_time * 1000).round} ms" 
       end
 
       private
