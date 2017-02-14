@@ -37,6 +37,20 @@ module Codeme
       def call(env)
         if WebSocket::Driver.websocket?(env)
           Client.new(env, @event_loop)
+          # A dummy rack response
+          body = {
+            message: "WS connected",
+            version: Codeme::Manager::VERSION
+          }.to_json
+
+          [
+            200,
+            {
+              "Content-Type" => "application/json",
+              "Content-Length" => body.bytesize
+            },
+            [body]
+          ]
         else
 
           # TODO: Handle HTTP API
