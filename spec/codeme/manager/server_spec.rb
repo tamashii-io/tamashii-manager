@@ -17,7 +17,11 @@ RSpec.describe Codeme::Manager::Server do
   end
 
   let(:client) { double(Codeme::Manager::Client) }
-  let(:event_loop) { double(Codeme::Manager::StreamEventLoop) }
+  let(:event_loop) { 
+    obj = double(Codeme::Manager::StreamEventLoop)
+    allow(obj).to receive(:timer)
+    obj
+  }
 
   before do
     # Prevent start thread
