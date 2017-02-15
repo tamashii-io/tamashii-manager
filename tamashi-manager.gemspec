@@ -6,12 +6,12 @@ require 'tamashi/manager/version'
 Gem::Specification.new do |spec|
   spec.name          = "tamashi-manager"
   spec.version       = Tamashi::Manager::VERSION
-  spec.authors       = ["蒼時弦也", "五倍紅寶石"]
-  spec.email         = ["elct9620@frost.tw", "hi@5xruby.tw"]
+  spec.authors       = ["蒼時弦也", "Liang-Chi Tseng", "五倍紅寶石"]
+  spec.email         = ["elct9620@frost.tw", "lctseng@cs.nctu.edu.tw", "hi@5xruby.tw"]
 
   spec.summary       = %q{The IoT device manager for RubyConf checkin system.}
   spec.description   = %q{The IoT device manager for RubyConf checkin system.}
-  spec.homepage      = "https://5xruby.tw"
+  spec.homepage      = "https://github.com/lctseng/tamashi-manager"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

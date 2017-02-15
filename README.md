@@ -32,5 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/tamashi-manager.
+Bug reports and pull requests are welcome on GitHub at https://github.com/lctseng/tamashi-manager.
+
+Contributed by [5xruby Inc.](https://5xruby.tw/)
 
