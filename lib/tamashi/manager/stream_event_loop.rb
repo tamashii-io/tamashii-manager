@@ -1,5 +1,6 @@
 require 'nio'
 require 'thread'
+require 'concurrent'
 
 module Tamashi
   module Manager
