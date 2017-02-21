@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "puma"
+  spec.add_runtime_dependency "concurrent-ruby"
   spec.add_runtime_dependency "rack"
   spec.add_runtime_dependency "tamashi-common"
   spec.add_runtime_dependency "websocket-driver"
