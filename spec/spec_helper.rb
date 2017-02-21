@@ -5,15 +5,15 @@ require 'simplecov'
 
 SimpleCov.start
 
-require "tamashi/manager"
-require "tamashi/rspec/helpers"
+require "tamashii/manager"
+require "tamashii/rspec/helpers"
 
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
-  conf.include Tamashi::RSpec::Helpers
+  conf.include Tamashii::RSpec::Helpers
 end
 
-Tamashi::Manager.config do
+Tamashii::Manager.config do
   log_file Tempfile.new.path
 end
 
