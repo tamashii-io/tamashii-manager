@@ -27,7 +27,11 @@ OptionParser.new do |opts|
   opts.on("-s", "--server SERVER", "Run Tamashii::Manager server") { |name| handlers.unshift(name.to_s) }
   opts.on("-o", "--host HOST", "The listen on HOST (default: 0.0.0.0)") { |host| options[:Host] = host.to_s; puts host }
   opts.on("-p", "--port PORT", "The listen on PORT (default: 3000)") { |port| options[:Port] = port.to_i }
-  opts.on("-C", "--config FILE", "The external configuration file") { |config| require File.join(Dir.pwd, config) }
+  opts.on("-C", "--config FILE", "The external configuration file") do |config|
+    if File.exists? config
+      require config
+    end
+  end
 
   opts.parse! ARGV
 end
