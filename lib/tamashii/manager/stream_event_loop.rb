@@ -2,6 +2,8 @@ require 'nio'
 require 'thread'
 require 'concurrent'
 
+Thread.abort_on_exception = true
+
 module Tamashii
   module Manager
     class StreamEventLoop
@@ -87,8 +89,20 @@ module Tamashii
             stream = monitor.value
 
             begin
-              incoming = io.recv_nonblock(4096)
-              stream.receive incoming
+              if monitor.writable?
+                if stream.flush_writer_buffer
+                  monitor.interests = :r
+                end
+                next unless monitor.readable?
+              end
+
+              incoming = io.read_nonblock(4096, exception: false)
+              case incoming
+              when :wait_readable then next
+              when nil then stream.close
+              else
+                stream.receive incoming
+              end
             rescue
               begin
                 stream.close

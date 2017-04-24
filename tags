@@ -1,0 +1,121 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Authorization	lib/tamashii/manager/authorization.rb	/^    class Authorization < Tamashii::Handler$/;"	c	language:Ruby	class:Tamashii.Manager
+AuthorizationError	lib/tamashii/manager/errors/authorization_error.rb	/^    class AuthorizationError < RuntimeError$/;"	c	language:Ruby	class:Tamashii.Manager
+Authorizator	lib/tamashii/manager/authorizator/token.rb	/^    module Authorizator$/;"	m	language:Ruby	class:Tamashii.Manager
+Broadcaster	lib/tamashii/manager/handler/broadcaster.rb	/^      class Broadcaster < Tamashii::Handler$/;"	c	language:Ruby	class:Tamashii.Manager.Handler
+Channel	lib/tamashii/manager/channel.rb	/^    class Channel < Set$/;"	c	language:Ruby	class:Tamashii.Manager
+ChannelPool	lib/tamashii/manager/channel_pool.rb	/^    class ChannelPool < Hash$/;"	c	language:Ruby	class:Tamashii.Manager
+Client	lib/tamashii/manager/client.rb	/^    class Client$/;"	c	language:Ruby	class:Tamashii.Manager
+Clients	lib/tamashii/manager/clients.rb	/^    class Clients < Hash$/;"	c	language:Ruby	class:Tamashii.Manager
+Config	lib/tamashii/manager/config.rb	/^    class Config < Tamashii::Config$/;"	c	language:Ruby	class:Tamashii.Manager
+Connection	lib/tamashii/manager/connection.rb	/^    class Connection < Set$/;"	c	language:Ruby	class:Tamashii.Manager
+Handler	lib/tamashii/manager/handler/broadcaster.rb	/^    module Handler$/;"	m	language:Ruby	class:Tamashii.Manager
+Manager	lib/tamashii/manager.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/authorization.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/authorizator/token.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/channel.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/channel_pool.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/client.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/clients.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/config.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/connection.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/errors/authorization_error.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/handler/broadcaster.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/server.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/stream.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/stream_event_loop.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Manager	lib/tamashii/manager/version.rb	/^  module Manager$/;"	m	language:Ruby	class:Tamashii
+Server	lib/tamashii/manager/server.rb	/^    class Server$/;"	c	language:Ruby	class:Tamashii.Manager
+Stream	lib/tamashii/manager/stream.rb	/^    class Stream$/;"	c	language:Ruby	class:Tamashii.Manager
+StreamEventLoop	lib/tamashii/manager/stream_event_loop.rb	/^    class StreamEventLoop$/;"	c	language:Ruby	class:Tamashii.Manager
+Tamashii	lib/tamashii/manager.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/authorization.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/authorizator/token.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/channel.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/channel_pool.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/client.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/clients.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/config.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/connection.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/errors/authorization_error.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/handler/broadcaster.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/server.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/stream.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/stream_event_loop.rb	/^module Tamashii$/;"	m	language:Ruby
+Tamashii	lib/tamashii/manager/version.rb	/^module Tamashii$/;"	m	language:Ruby
+Token	lib/tamashii/manager/authorizator/token.rb	/^      class Token$/;"	c	language:Ruby	class:Tamashii.Manager.Authorizator
+accept	lib/tamashii/manager/client.rb	/^      def accept(type, id)$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+accepted_clients	lib/tamashii/manager/client.rb	/^      def self.accepted_clients$/;"	F	language:Ruby	class:Tamashii.Manager.Client
+attach	lib/tamashii/manager/stream_event_loop.rb	/^      def attach(io, stream)$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+auth_type	lib/tamashii/manager/config.rb	/^      def auth_type(type = nil)$/;"	f	language:Ruby	class:Tamashii.Manager.Config
+authorized?	lib/tamashii/manager/client.rb	/^      def authorized?$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+available?	lib/tamashii/manager/channel_pool.rb	/^      def available?$/;"	f	language:Ruby	class:Tamashii.Manager.ChannelPool
+available?	lib/tamashii/manager/connection.rb	/^        def available?$/;"	f	language:Ruby	class:Tamashii.Manager.Connection
+beat	lib/tamashii/manager/client.rb	/^      def beat$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+broadcast	lib/tamashii/manager/channel.rb	/^      def broadcast(packet, exclude_server = false)$/;"	f	language:Ruby	class:Tamashii.Manager
+broadcast_all	lib/tamashii/manager/channel.rb	/^      def broadcast_all(packet)$/;"	f	language:Ruby	class:Tamashii.Manager
+call	lib/tamashii/manager/server.rb	/^        def call(env)$/;"	f	language:Ruby	class:Tamashii.Manager.Server
+call	lib/tamashii/manager/server.rb	/^      def call(env)$/;"	f	language:Ruby	class:Tamashii.Manager
+call!	lib/tamashii/manager/server.rb	/^        def call!(env)$/;"	f	language:Ruby	class:Tamashii.Manager.Server
+clean_rack_hijack	lib/tamashii/manager/stream.rb	/^      def clean_rack_hijack$/;"	f	language:Ruby	class:Tamashii.Manager.Stream
+close	lib/tamashii/manager/client.rb	/^      def close$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+close	lib/tamashii/manager/stream.rb	/^      def close$/;"	f	language:Ruby	class:Tamashii.Manager.Stream
+compile	lib/tamashii/manager/server.rb	/^        def compile$/;"	f	language:Ruby	class:Tamashii.Manager.Server
+config	lib/tamashii/manager.rb	/^    def self.config(&block)$/;"	F	language:Ruby	class:Tamashii.Manager
+create!	lib/tamashii/manager/channel_pool.rb	/^      def create!$/;"	f	language:Ruby	class:Tamashii.Manager.ChannelPool
+detach	lib/tamashii/manager/stream_event_loop.rb	/^      def detach(io, stream)$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+emit_error	lib/tamashii/manager/client.rb	/^      def emit_error(message)$/;"	f	language:Ruby	class:Tamashii.Manager
+get	lib/tamashii/manager/channel.rb	/^        def get(id)$/;"	f	language:Ruby	class:Tamashii.Manager.Channel
+get_idle	lib/tamashii/manager/channel_pool.rb	/^      def get_idle$/;"	f	language:Ruby	class:Tamashii.Manager.ChannelPool
+heartbeat_callback	lib/tamashii/manager/client.rb	/^      def heartbeat_callback(beat_time)$/;"	f	language:Ruby	class:Tamashii.Manager
+id	lib/tamashii/manager/client.rb	/^      def id$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+idle	lib/tamashii/manager/channel_pool.rb	/^      def idle(channel_id = nil)$/;"	f	language:Ruby	class:Tamashii.Manager.ChannelPool
+initialize	lib/tamashii/manager/authorizator/token.rb	/^        def initialize$/;"	f	language:Ruby	class:Tamashii.Manager.Authorizator.Token
+initialize	lib/tamashii/manager/channel.rb	/^      def initialize(id, *args)$/;"	f	language:Ruby	class:Tamashii.Manager
+initialize	lib/tamashii/manager/channel_pool.rb	/^      def initialize(size = 10)$/;"	f	language:Ruby	class:Tamashii.Manager.ChannelPool
+initialize	lib/tamashii/manager/client.rb	/^      def initialize(env, event_loop)$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+initialize	lib/tamashii/manager/server.rb	/^      def initialize$/;"	f	language:Ruby	class:Tamashii.Manager
+initialize	lib/tamashii/manager/stream.rb	/^      def initialize(event_loop, io, client)$/;"	f	language:Ruby	class:Tamashii.Manager.Stream
+initialize	lib/tamashii/manager/stream_event_loop.rb	/^      def initialize$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+instance	lib/tamashii/manager/clients.rb	/^        def instance$/;"	f	language:Ruby	class:Tamashii.Manager.Clients
+instance	lib/tamashii/manager/connection.rb	/^        def instance$/;"	f	language:Ruby	class:Tamashii.Manager.Connection
+log_level	lib/tamashii/manager/config.rb	/^      def log_level(level = nil)$/;"	f	language:Ruby	class:Tamashii.Manager.Config
+logger	lib/tamashii/manager.rb	/^    def self.logger$/;"	F	language:Ruby	class:Tamashii.Manager
+method_missing	lib/tamashii/manager/clients.rb	/^        def method_missing(name, *args, &block)$/;"	f	language:Ruby	class:Tamashii.Manager.Clients
+on_close	lib/tamashii/manager/client.rb	/^      def on_close(e)$/;"	f	language:Ruby	class:Tamashii.Manager
+on_open	lib/tamashii/manager/client.rb	/^      def on_open$/;"	f	language:Ruby	class:Tamashii.Manager
+parse	lib/tamashii/manager/client.rb	/^      def parse(buffer)$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+pool	lib/tamashii/manager/channel.rb	/^        def pool$/;"	f	language:Ruby	class:Tamashii.Manager.Channel
+post	lib/tamashii/manager/stream_event_loop.rb	/^      def post(task = nil, &block)$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+ready	lib/tamashii/manager/channel_pool.rb	/^      def ready(channel)$/;"	f	language:Ruby	class:Tamashii.Manager.ChannelPool
+receive	lib/tamashii/manager/client.rb	/^      def receive(data)$/;"	f	language:Ruby	class:Tamashii.Manager
+receive	lib/tamashii/manager/stream.rb	/^      def receive(data)$/;"	f	language:Ruby	class:Tamashii.Manager.Stream
+register	lib/tamashii/manager/clients.rb	/^      def register(client)$/;"	f	language:Ruby	class:Tamashii.Manager
+register	lib/tamashii/manager/connection.rb	/^        def register(client)$/;"	f	language:Ruby	class:Tamashii.Manager.Connection
+resolve	lib/tamashii/manager/authorization.rb	/^      def resolve(data = nil)$/;"	f	language:Ruby	class:Tamashii.Manager.Authorization
+resolve	lib/tamashii/manager/handler/broadcaster.rb	/^        def resolve(data = nil)$/;"	f	language:Ruby	class:Tamashii.Manager.Handler.Broadcaster
+run	lib/tamashii/manager/stream_event_loop.rb	/^      def run$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+select_channel	lib/tamashii/manager/channel.rb	/^        def select_channel(client)$/;"	f	language:Ruby	class:Tamashii.Manager.Channel
+send	lib/tamashii/manager/client.rb	/^      def send(packet)$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+send_to	lib/tamashii/manager/channel.rb	/^      def send_to(channel_id, packet)$/;"	f	language:Ruby	class:Tamashii.Manager
+servers	lib/tamashii/manager/channel.rb	/^        def servers$/;"	f	language:Ruby	class:Tamashii.Manager.Channel
+setup_heartbeat_timer	lib/tamashii/manager/server.rb	/^      def setup_heartbeat_timer$/;"	f	language:Ruby	class:Tamashii.Manager
+shutdown	lib/tamashii/manager/client.rb	/^      def shutdown$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+shutdown	lib/tamashii/manager/stream.rb	/^      def shutdown$/;"	f	language:Ruby	class:Tamashii.Manager.Stream
+spawn	lib/tamashii/manager/stream_event_loop.rb	/^      def spawn$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+stop	lib/tamashii/manager/stream_event_loop.rb	/^      def stop$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+stopped?	lib/tamashii/manager/stream_event_loop.rb	/^      def stopped?$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+subscribe	lib/tamashii/manager/channel.rb	/^        def subscribe(client)$/;"	f	language:Ruby	class:Tamashii.Manager.Channel
+timer	lib/tamashii/manager/stream_event_loop.rb	/^      def timer(interval, &block)$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+type	lib/tamashii/manager/client.rb	/^      def type$/;"	f	language:Ruby	class:Tamashii.Manager.Client
+unregister	lib/tamashii/manager/clients.rb	/^      def unregister(client)$/;"	f	language:Ruby	class:Tamashii.Manager
+unregister	lib/tamashii/manager/connection.rb	/^        def unregister(client)$/;"	f	language:Ruby	class:Tamashii.Manager.Connection
+unsubscribe	lib/tamashii/manager/channel.rb	/^        def unsubscribe(client)$/;"	f	language:Ruby	class:Tamashii.Manager.Channel
+verify!	lib/tamashii/manager/authorizator/token.rb	/^        def verify!(data)$/;"	f	language:Ruby	class:Tamashii.Manager.Authorizator.Token
+wakeup	lib/tamashii/manager/stream_event_loop.rb	/^      def wakeup$/;"	f	language:Ruby	class:Tamashii.Manager.StreamEventLoop
+write	lib/tamashii/manager/client.rb	/^      def write(buffer)$/;"	f	language:Ruby	class:Tamashii.Manager.Client

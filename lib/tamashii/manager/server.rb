@@ -1,6 +1,7 @@
 require "json"
 require "securerandom"
 require "websocket/driver"
+require "monitor"
 
 require "tamashii/manager/client"
 require "tamashii/manager/stream"
@@ -12,7 +13,7 @@ module Tamashii
       class << self
         attr_reader :instance
 
-        LOCK = Mutex.new
+        LOCK = Monitor.new
 
         def compile
           @instance ||= new
