@@ -34,6 +34,7 @@ module Tamashii
       register :log_level, Logger::INFO
       register :env, nil
       register :heartbeat_interval, 3
+      register :port, 3000
 
       def [](key)
         config(key)

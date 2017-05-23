@@ -27,7 +27,10 @@ OptionParser.new do |opts|
   opts.on('-o', '--host HOST', 'The listen on HOST (default: 0.0.0.0)') { |host| options[:Host] = host.to_s }
   opts.on('-p', '--port PORT', 'The listen on PORT (default: 3000)') { |port| options[:Port] = port.to_i }
   opts.on('-C', '--config FILE', 'The external configuration file') do |config|
-    require config if File.exist? config
+    if File.exist? config
+      require config
+      options[:Port] = Tamashii::Manager::Config.port
+    end
   end
   # rubocop:enable Metrics/LineLength
 

@@ -14,9 +14,10 @@ Tamashii::Resolver.handle Tamashii::Type::AUTH_TOKEN, Tamashii::Manager::Authori
 module Tamashii
   # :nodoc:
   module Manager
-    autoload :Server, 'tamashii/manager/server'
-    autoload :Config, 'tamashii/manager/config'
-    autoload :Client, 'tamashii/manager/client'
+    autoload :Server,  'tamashii/manager/server'
+    autoload :Config,  'tamashii/manager/config'
+    autoload :Client,  'tamashii/manager/client'
+    autoload :Channel, 'tamashii/manager/channel'
 
     def self.config(&block)
       return instance_exec(Config.instance, &block) if block_given?
