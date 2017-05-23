@@ -17,7 +17,7 @@ module Tamashii
     end
 
     def self.logger
-      @logger ||= Tamashii::Logger.new(Config.log_file)
+      @logger ||= ::Logger.new(Config.log_file)
     end
   end
 end

@@ -8,30 +8,30 @@ require 'tamashii/manager'
 
 options = {
   Port: ENV['PORT'] || 3000,
-  Host: "0.0.0.0",
+  Host: '0.0.0.0',
   AccessLog: []
 }
 
 OptionParser.new do |opts|
-  opts.on("-v", "--version", "Display Tamashii::Manager version") {
-    puts "Tamashii::Manager #{Tamashii::Manager::VERSION}"
+  opts.on('-v', '--version', 'Display Tamashii::Manager version') do
+    puts 'Tamashii::Manager #{Tamashii::Manager::VERSION}'
     exit
-  }
+  end
 
-  opts.on("-h", "--help") {
+  opts.on('-h', '--help') do
     puts opts
     exit
-  }
-
-  opts.separator ""
-  opts.on("-s", "--server SERVER", "Run Tamashii::Manager server") { |name| handlers.unshift(name.to_s) }
-  opts.on("-o", "--host HOST", "The listen on HOST (default: 0.0.0.0)") { |host| options[:Host] = host.to_s; puts host }
-  opts.on("-p", "--port PORT", "The listen on PORT (default: 3000)") { |port| options[:Port] = port.to_i }
-  opts.on("-C", "--config FILE", "The external configuration file") do |config|
-    if File.exists? config
-      require config
-    end
   end
+
+  # rubocop:disable Metrics/LineLength
+  opts.separator ''
+  opts.on('-s', '--server SERVER', 'Run Tamashii::Manager server') { |name| handlers.unshift(name.to_s) }
+  opts.on('-o', '--host HOST', 'The listen on HOST (default: 0.0.0.0)') { |host| options[:Host] = host.to_s }
+  opts.on('-p', '--port PORT', 'The listen on PORT (default: 3000)') { |port| options[:Port] = port.to_i }
+  opts.on('-C', '--config FILE', 'The external configuration file') do |config|
+    require config if File.exist? config
+  end
+  # rubocop:enable Metrics/LineLength
 
   opts.parse! ARGV
 end
@@ -40,10 +40,12 @@ begin
   config = Tamashii::Manager::Config
   case config.auth_type
   when :token
-    raise LoadError.new("Token authorization require to set token") if config.token.nil?
+    # rubocop:disable Metrics/LineLength
+    raise LoadError, 'Token authorization require to set token' if config.token.nil?
+    # rubocop:enable Metrics/LineLength
   end
 
-  Rack::Handler.default.run Tamashii::Manager::Server, options
+  Rack::Handler.default.run Tamashii::Manager::Server.new, options
 rescue LoadError => e
   # TODO: Improve error message
   STDERR.puts e

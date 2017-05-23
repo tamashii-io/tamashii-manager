@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "puma"
   spec.add_runtime_dependency "concurrent-ruby"
   spec.add_runtime_dependency "rack"
+  spec.add_runtime_dependency "tamashii"
   spec.add_runtime_dependency "tamashii-common"
   spec.add_runtime_dependency "websocket-driver"
   spec.add_runtime_dependency "nio4r"
