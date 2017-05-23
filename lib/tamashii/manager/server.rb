@@ -1,5 +1,3 @@
-require 'tamashii/server'
-
 Tamashii::Server.config do |config|
   config.connection_class = Tamashii::Manager::Client
 end

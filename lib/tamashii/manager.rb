@@ -1,3 +1,4 @@
+require 'tamashii/server'
 require 'tamashii/manager/version'
 require 'tamashii/manager/authorization'
 require 'tamashii/manager/handler/broadcaster'
