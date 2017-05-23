@@ -1,13 +1,10 @@
-require "websocket/driver"
-require "tamashii/manager/stream"
-require "tamashii/manager/channel"
-require "tamashii/manager/authorization"
-require "tamashii/common"
+require 'tamashii/manager/authorization'
+require 'tamashii/common'
 
 module Tamashii
   module Manager
+    # :nodoc:
     class Client < Tamashii::Server::Connection::Base
-
       attr_reader :env, :url
       attr_reader :channel
 

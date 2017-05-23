@@ -2,8 +2,6 @@
 
 require 'rack'
 require 'optparse'
-require 'tamashii/manager/version'
-require 'tamashii/manager/server'
 require 'tamashii/manager'
 
 options = {
@@ -14,7 +12,7 @@ options = {
 
 OptionParser.new do |opts|
   opts.on('-v', '--version', 'Display Tamashii::Manager version') do
-    puts 'Tamashii::Manager #{Tamashii::Manager::VERSION}'
+    puts "Tamashii::Manager #{Tamashii::Manager::VERSION}"
     exit
   end
 
