@@ -23,13 +23,13 @@ RSpec.describe Tamashii::Manager::Authorization do
       let(:data) { "0,#{device_id},#{token}" }
 
       it "has valid token" do
-        expect(Tamashii::Manager::Config).to receive(:token).and_return(token)
+        expect_any_instance_of(Tamashii::Manager::Config).to receive(:token).and_return(token)
         expect(client).to receive(:accept).with(0, device_id)
         subject.resolve(data)
       end
 
       it "has invalid token" do
-        expect(Tamashii::Manager::Config).to receive(:token).and_return(SecureRandom.hex(16))
+        expect_any_instance_of(Tamashii::Manager::Config).to receive(:token).and_return(SecureRandom.hex(16))
         expect { subject.resolve(data) }.to raise_error(Tamashii::Manager::AuthorizationError, /Token mismatch/)
       end
     end

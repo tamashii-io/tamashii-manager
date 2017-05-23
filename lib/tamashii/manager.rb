@@ -19,12 +19,12 @@ module Tamashii
     autoload :Client, 'tamashii/manager/client'
 
     def self.config(&block)
-      return Config.class_eval(&block) if block_given?
+      return instance_exec(Config.instance, &block) if block_given?
       Config
     end
 
     def self.logger
-      @logger ||= ::Logger.new(Config.log_file)
+      @logger ||= ::Logger.new(config.log_file)
     end
   end
 end
