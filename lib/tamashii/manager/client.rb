@@ -34,7 +34,12 @@ module Tamashii
         @id = id
         @type = type
         @channel = Channel.subscribe(self)
-        send(Tamashii::Packet.new(Tamashii::Type::AUTH_RESPONSE, @channel.id, true).dump)
+        packet = Tamashii::Packet.new(
+          Tamashii::Type::AUTH_RESPONSE,
+          @channel.id,
+          true
+        )
+        send packet.dump
       end
 
       def on_open
@@ -45,22 +50,36 @@ module Tamashii
         Manager.logger.debug("Receive Data: #{data}")
         return unless data.is_a?(Array)
         Tamashii::Resolver.resolve(Tamashii::Packet.load(data), client: self)
-      rescue AuthorizationError => e
-        Manager.logger.error("Client #{id} authentication failed => #{e.message}")
-        send(Tamashii::Packet.new(Tamashii::Type::AUTH_RESPONSE, 0, false))
-        @socket.close
+      rescue AuthorizationError => reason
+        close_on_authorize_failed(reason)
       rescue => e
-        Manager.logger.error("Error when receiving data from client #{id}: #{e.message}")
-        Manager.logger.debug("Backtrace:")
-        e.backtrace.each {|msg| Manager.logger.debug(msg)}
+        on_message_error(e)
       end
 
-      def on_close(e)
+      def on_close
         Manager.logger.info("Client #{id} closed connection")
       end
 
       def emit_error(message)
         Manager.logger.error("Client #{id} has error => #{message}")
+      end
+
+      private
+
+      def close_on_authorize_failed(reason)
+        Manager.logger.error(
+          "Client #{id} authentication failed => #{reason.message}"
+        )
+        send(Tamashii::Packet.new(Tamashii::Type::AUTH_RESPONSE, 0, false))
+        @socket.close
+      end
+
+      def on_message_error(e)
+        Manager.logger.error(
+          "Error when receiving data from client #{id}: #{e.message}"
+        )
+        Manager.logger.debug('Backtrace:')
+        e.backtrace.each { |msg| Manager.logger.debug(msg) }
       end
     end
   end
