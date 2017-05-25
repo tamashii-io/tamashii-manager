@@ -1,5 +1,4 @@
-require 'tamashii/manager/authorization'
-require 'tamashii/common'
+# frozen_string_literal: true
 
 module Tamashii
   module Manager
@@ -12,10 +11,6 @@ module Tamashii
       attr_reader :last_response_time
 
       attr_accessor :tag
-
-      def self.accepted_clients
-        Clients.instance
-      end
 
       def id
         return "<Unauthorized : #{@env['REMOTE_ADDR']}>" if @id.nil?
@@ -39,7 +34,6 @@ module Tamashii
         @id = id
         @type = type
         @channel = Channel.subscribe(self)
-        Clients.register(self)
         send(Tamashii::Packet.new(Tamashii::Type::AUTH_RESPONSE, @channel.id, true).dump)
       end
 
