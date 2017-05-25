@@ -1,4 +1,4 @@
-require 'tamashii/manager/channel_pool'
+# frozen_string_literal: true
 
 module Tamashii
   module Manager

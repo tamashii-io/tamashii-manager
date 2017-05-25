@@ -1,16 +1,16 @@
-require "tamashii/manager/errors/authorization_error"
-require "tamashii/manager/authorizator/token"
-require "tamashii/common"
+# frozen_string_literal: true
 
 module Tamashii
   module Manager
+    # :nodoc:
     class Authorization < Tamashii::Handler
       def resolve(data = nil)
         type, client_id = case @type
                           when Tamashii::Type::AUTH_TOKEN
                             Authorizator::Token.new.verify!(data)
                           else
-                            raise AuthorizationError.new("Invalid authorization type.")
+                            raise Error::AuthorizationError,
+                                  'Invalid authorization type.'
                           end
         @env[:client].accept(type, client_id)
       end

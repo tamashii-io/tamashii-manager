@@ -4,7 +4,7 @@ require 'tamashii/manager/config'
 require 'tamashii/manager/client'
 require 'tamashii/manager/authorization'
 require 'tamashii/manager/authorizator/token'
-require "tamashii/manager/errors/authorization_error"
+require "tamashii/manager/error/authorization_error"
 
 RSpec.describe Tamashii::Manager::Authorization do
   let(:client) { double(Tamashii::Manager::Client) }
@@ -13,7 +13,7 @@ RSpec.describe Tamashii::Manager::Authorization do
   let(:data) { nil }
   subject { described_class.new(type, env) }
 
-  it { expect { subject.resolve(data) }.to raise_error(Tamashii::Manager::AuthorizationError, /Invalid authorization type/) }
+  it { expect { subject.resolve(data) }.to raise_error(Tamashii::Manager::Error::AuthorizationError, /Invalid authorization type/) }
 
   describe ".authorize!" do
     context "token authorizator" do
@@ -30,7 +30,7 @@ RSpec.describe Tamashii::Manager::Authorization do
 
       it "has invalid token" do
         expect_any_instance_of(Tamashii::Manager::Config).to receive(:token).and_return(SecureRandom.hex(16))
-        expect { subject.resolve(data) }.to raise_error(Tamashii::Manager::AuthorizationError, /Token mismatch/)
+        expect { subject.resolve(data) }.to raise_error(Tamashii::Manager::Error::AuthorizationError, /Token mismatch/)
       end
     end
   end

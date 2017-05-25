@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'tamashii/server'
+require 'tamashii/common'
 require 'tamashii/manager/version'
-require 'tamashii/manager/handler/broadcaster'
 
 module Tamashii
   # :nodoc:
@@ -11,7 +11,11 @@ module Tamashii
     autoload :Config,        'tamashii/manager/config'
     autoload :Client,        'tamashii/manager/client'
     autoload :Channel,       'tamashii/manager/channel'
+    autoload :ChannelPool,   'tamashii/manager/channel_pool'
     autoload :Authorization, 'tamashii/manager/authorization'
+    autoload :Authorizator,  'tamashii/manager/authorizator'
+    autoload :Handler,       'tamashii/manager/handler'
+    autoload :Error,         'tamashii/manager/error'
 
     def self.config(&block)
       return instance_exec(Config.instance, &block) if block_given?
