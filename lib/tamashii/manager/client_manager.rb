@@ -20,6 +20,10 @@ module Tamashii
               return unless client.is_a?(Client)
               accepted_clients[name.to_s] = client
             end
+
+            def sent_to(id, packet)
+              Manager.server.pubsub.send_to(id, packet)
+            end
           end
         end
       end

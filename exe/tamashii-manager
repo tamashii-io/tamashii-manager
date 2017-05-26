@@ -46,7 +46,7 @@ begin
     # rubocop:enable Metrics/LineLength
   end
 
-  Rack::Handler.default.run Tamashii::Manager::Server.new, options
+  Rack::Handler.default.run Tamashii::Manager.server, options
 rescue LoadError => e
   # TODO: Improve error message
   STDERR.puts e

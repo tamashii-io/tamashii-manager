@@ -4,21 +4,21 @@ require 'tamashii/server'
 require 'tamashii/common'
 require 'tamashii/manager/version'
 
+require 'tamashii/manager/subscription'
+require 'tamashii/manager/config'
+require 'tamashii/manager/client_manager'
+require 'tamashii/manager/client'
+require 'tamashii/manager/channel'
+require 'tamashii/manager/channel_pool'
+require 'tamashii/manager/authorization'
+require 'tamashii/manager/authorizator'
+require 'tamashii/manager/handler'
+require 'tamashii/manager/error'
+require 'tamashii/manager/server'
+
 module Tamashii
   # :nodoc:
   module Manager
-    autoload :Server,        'tamashii/manager/server'
-    autoload :Subscription,  'tamashii/manager/subscription'
-    autoload :Config,        'tamashii/manager/config'
-    autoload :Client,        'tamashii/manager/client'
-    autoload :ClientManager, 'tamashii/manager/client_manager'
-    autoload :Channel,       'tamashii/manager/channel'
-    autoload :ChannelPool,   'tamashii/manager/channel_pool'
-    autoload :Authorization, 'tamashii/manager/authorization'
-    autoload :Authorizator,  'tamashii/manager/authorizator'
-    autoload :Handler,       'tamashii/manager/handler'
-    autoload :Error,         'tamashii/manager/error'
-
     def self.config(&block)
       return instance_exec(Config.instance, &block) if block_given?
       Config
@@ -26,6 +26,10 @@ module Tamashii
 
     def self.logger
       @logger ||= ::Logger.new(config.log_file)
+    end
+
+    def self.server
+      @server ||= Tamashii::Manager::Server.new
     end
   end
 end
