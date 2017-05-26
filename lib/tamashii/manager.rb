@@ -8,8 +8,10 @@ module Tamashii
   # :nodoc:
   module Manager
     autoload :Server,        'tamashii/manager/server'
+    autoload :Subscription,  'tamashii/manager/subscription'
     autoload :Config,        'tamashii/manager/config'
     autoload :Client,        'tamashii/manager/client'
+    autoload :ClientManager, 'tamashii/manager/client_manager'
     autoload :Channel,       'tamashii/manager/channel'
     autoload :ChannelPool,   'tamashii/manager/channel_pool'
     autoload :Authorization, 'tamashii/manager/authorization'

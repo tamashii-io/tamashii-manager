@@ -4,6 +4,8 @@ module Tamashii
   module Manager
     # :nodoc:
     class Client < Tamashii::Server::Connection::Base
+      include ClientManager
+
       attr_reader :env, :url
       attr_reader :channel
 
@@ -39,7 +41,25 @@ module Tamashii
           @channel.id,
           true
         )
+        Client[id] = self
         send packet.dump
+      end
+
+      def beat
+        beat_time = Time.now
+        @socket.ping("heart-beat-at-#{beat_time}") do
+          heartbeat_callback(beat_time)
+        end
+      end
+
+      def heartbeat_callback(beat_time)
+        @last_beat_timestamp = Time.now
+        @last_response_time = @last_beat_timestamp - beat_time
+        Manager.logger.debug(
+          "[#{id}] Heart beat #{beat_time} " \
+          "returns at #{@last_beat_timestamp}!" \
+          " Delay: #{(@last_response_time * 1000).round} ms"
+        )
       end
 
       def on_open
@@ -58,6 +78,7 @@ module Tamashii
 
       def on_close
         Manager.logger.info("Client #{id} closed connection")
+        Client[id] = nil
       end
 
       def emit_error(message)
