@@ -9,41 +9,50 @@ RSpec.describe Tamashii::Manager::ChannelPool do
   subject { described_class.new(pool_size) }
 
   it "default has 10 idle channel" do
-    expect(subject.idle.size).to eq(10)
+    expect(subject.idles.size).to eq(10)
   end
 
   describe "#ready" do
     it "can add to ready pool when channel has client" do
-      channel = subject.get_idle
+      channel = subject.idle
       channel.add(double(Tamashii::Manager::Client))
       subject.ready(channel)
-      expect(subject.idle.size).not_to be(10)
+      expect(subject.idles.size).not_to be(10)
     end
 
     it "cannot add empty channel to ready pool" do
-      channel = subject.get_idle
+      channel = subject.idle
       subject.ready(channel)
-      expect(subject.idle.size).to be(10)
+      expect(subject.idles.size).to be(10)
     end
   end
 
   describe "#idle" do
-    before do
-      @client = double(Tamashii::Manager::Client)
-      @channel = subject.get_idle
-      @channel.add(@client)
-      subject.ready(@channel)
+    context "has idle channel" do
+      before do
+        @client = double(Tamashii::Manager::Client)
+        @channel = subject.idle
+        @channel.add(@client)
+        subject.ready(@channel)
+      end
+
+      it "can set empty channel to idle" do
+        @channel.delete(@client)
+        subject.idle(@channel.id)
+        expect(subject.idles.size).to be(10)
+      end
+
+      it "cannot set non-empty channel to idle" do
+        subject.idle(@channel.id)
+        expect(subject.idles.size).not_to be(10)
+      end
     end
 
-    it "can set empty channel to idle" do
-      @channel.delete(@client)
-      subject.idle(@channel.id)
-      expect(subject.idle.size).to be(10)
-    end
+    it { expect(subject.idle).to be_instance_of(Tamashii::Manager::Channel) }
 
-    it "cannot set non-empty channel to idle" do
-      subject.idle(@channel.id)
-      expect(subject.idle.size).not_to be(10)
+    context "pool is zero" do
+      let(:pool_size) { 0 }
+      it { expect(subject.idle).to be nil }
     end
   end
 
@@ -61,15 +70,6 @@ RSpec.describe Tamashii::Manager::ChannelPool do
     it "new idle channel" do
       subject.create!
       expect(subject.available?).to be true
-    end
-  end
-
-  describe "#get_idle" do
-    it { expect(subject.get_idle).to be_instance_of(Tamashii::Manager::Channel) }
-
-    context "pool is zero" do
-      let(:pool_size) { 0 }
-      it { expect(subject.get_idle).to be nil }
     end
   end
 end

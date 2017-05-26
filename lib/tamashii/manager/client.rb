@@ -1,12 +1,10 @@
-require "websocket/driver"
-require "tamashii/manager/stream"
-require "tamashii/manager/channel"
-require "tamashii/manager/authorization"
-require "tamashii/common"
+# frozen_string_literal: true
 
 module Tamashii
   module Manager
-    class Client
+    # :nodoc:
+    class Client < Tamashii::Server::Connection::Base
+      include ClientManager
 
       attr_reader :env, :url
       attr_reader :channel
@@ -15,39 +13,6 @@ module Tamashii
       attr_reader :last_response_time
 
       attr_accessor :tag
-
-      def self.accepted_clients
-        Clients.instance
-      end
-
-      def initialize(env, event_loop)
-        @env = env
-        @id = nil
-        @type = Type::CLIENT[:agent]
-        @last_beat_timestamp = Time.at(0)
-        @last_response_time = Float::INFINITY
-
-        secure = Rack::Request.new(env).ssl?
-        scheme = secure ? 'wss:' : 'ws:'
-        @url = "#{scheme}//#{env['HTTP_HOST']}#{env['REQUEST_URI']}"
-
-        Manager.logger.info("Accept connection from #{env['REMOTE_ADDR']}")
-
-        @driver = WebSocket::Driver.rack(self)
-
-        env['rack.hijack'].call
-        @io = env['rack.hijack_io']
-
-        Connection.register(self)
-        @stream = Stream.new(event_loop, @io, self)
-
-        @driver.on(:open)    { |e| on_open }
-        @driver.on(:message) { |e| receive(e.data) }
-        @driver.on(:close)   { |e| on_close(e) }
-        @driver.on(:error)   { |e| emit_error(e.message) }
-
-        @driver.start
-      end
 
       def id
         return "<Unauthorized : #{@env['REMOTE_ADDR']}>" if @id.nil?
@@ -58,17 +23,9 @@ module Tamashii
         Type::CLIENT.key(@type)
       end
 
-      def write(buffer)
-        @io.write(buffer)
-      end
-
       def send(packet)
         packet = packet.dump if packet.is_a?(Tamashii::Packet)
-        @driver.binary(packet)
-      end
-
-      def parse(buffer)
-        @driver.parse(buffer)
+        @socket.transmit(packet)
       end
 
       def authorized?
@@ -79,25 +36,18 @@ module Tamashii
         @id = id
         @type = type
         @channel = Channel.subscribe(self)
-        Clients.register(self)
-        send(Tamashii::Packet.new(Tamashii::Type::AUTH_RESPONSE, @channel.id, true).dump)
-      end
-
-      def close
-        @driver.close
-      end
-
-      def shutdown
-        Connection.unregister(self)
-        if authorized?
-          Channel.unsubscribe(self)
-          Clients.unregister(self)
-        end
+        packet = Tamashii::Packet.new(
+          Tamashii::Type::AUTH_RESPONSE,
+          @channel.id,
+          true
+        )
+        Client[id] = self
+        send packet.dump
       end
 
       def beat
         beat_time = Time.now
-        @driver.ping("heart-beat-at-#{beat_time}") do
+        @socket.ping("heart-beat-at-#{beat_time}") do
           heartbeat_callback(beat_time)
         end
       end
@@ -105,35 +55,52 @@ module Tamashii
       def heartbeat_callback(beat_time)
         @last_beat_timestamp = Time.now
         @last_response_time = @last_beat_timestamp - beat_time
-        Manager.logger.debug "[#{@id}] Heart beat #{beat_time} returns at #{@last_beat_timestamp}! Delay: #{(@last_response_time * 1000).round} ms"
+        Manager.logger.debug(
+          "[#{id}] Heart beat #{beat_time} " \
+          "returns at #{@last_beat_timestamp}!" \
+          " Delay: #{(@last_response_time * 1000).round} ms"
+        )
       end
 
-      private
       def on_open
         Manager.logger.info("Client #{id} is ready")
       end
 
-      def receive(data)
+      def on_message(data)
         Manager.logger.debug("Receive Data: #{data}")
         return unless data.is_a?(Array)
         Tamashii::Resolver.resolve(Tamashii::Packet.load(data), client: self)
-      rescue AuthorizationError => e
-        Manager.logger.error("Client #{id} authentication failed => #{e.message}")
-        send(Tamashii::Packet.new(Tamashii::Type::AUTH_RESPONSE, 0, false))
-        @driver.close
+      rescue AuthorizationError => reason
+        close_on_authorize_failed(reason)
       rescue => e
-        Manager.logger.error("Error when receiving data from client #{id}: #{e.message}")
-        Manager.logger.debug("Backtrace:")
-        e.backtrace.each {|msg| Manager.logger.debug(msg)}
+        on_message_error(e)
       end
 
-      def on_close(e)
+      def on_close
         Manager.logger.info("Client #{id} closed connection")
-        @stream.close
+        Client[id] = nil
       end
 
       def emit_error(message)
         Manager.logger.error("Client #{id} has error => #{message}")
+      end
+
+      private
+
+      def close_on_authorize_failed(reason)
+        Manager.logger.error(
+          "Client #{id} authentication failed => #{reason.message}"
+        )
+        send(Tamashii::Packet.new(Tamashii::Type::AUTH_RESPONSE, 0, false))
+        @socket.close
+      end
+
+      def on_message_error(e)
+        Manager.logger.error(
+          "Error when receiving data from client #{id}: #{e.message}"
+        )
+        Manager.logger.debug('Backtrace:')
+        e.backtrace.each { |msg| Manager.logger.debug(msg) }
       end
     end
   end

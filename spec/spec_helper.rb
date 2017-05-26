@@ -13,8 +13,8 @@ RSpec.configure do |conf|
   conf.include Tamashii::RSpec::Helpers
 end
 
-Tamashii::Manager.config do
-  log_file Tempfile.new.path
+Tamashii::Manager.config do |config|
+  config.log_file = Tempfile.new.path
 end
 
 

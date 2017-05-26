@@ -20,7 +20,7 @@ RSpec.describe Tamashii::Manager::Config do
     it "can be changed" do
       new_token = SecureRandom.hex(16)
       expect(subject.token).to be_nil
-      subject.token(new_token)
+      subject.token = new_token
       expect(subject.token).to eq(new_token)
     end
   end

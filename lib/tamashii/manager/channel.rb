@@ -1,7 +1,8 @@
-require 'tamashii/manager/channel_pool'
+# frozen_string_literal: true
 
 module Tamashii
   module Manager
+    # :nodoc:
     class Channel < Set
       SERVER_ID = 0
 
@@ -23,7 +24,7 @@ module Tamashii
           when :checkin
             servers
           else
-            return pool.get_idle || pool.create! if pool[client.tag].nil?
+            return pool.idle || pool.create! if pool[client.tag].nil?
             pool[client.tag]
           end
         end
@@ -35,7 +36,9 @@ module Tamashii
 
           pool.ready(channel)
 
-          Manager.logger.info("Client #{client.id} subscribe to Channel ##{channel.id}")
+          Manager.logger.info(
+            "Client #{client.id} subscribe to Channel ##{channel.id}"
+          )
 
           channel
         end
@@ -44,12 +47,18 @@ module Tamashii
           channel = select_channel(client)
           channel.delete(client)
 
-          Manager.logger.info("Client #{client.id} unsubscribe to Channel ##{channel.id}")
+          Manager.logger.info(
+            "Client #{client.id} unsubscribe to Channel ##{channel.id}"
+          )
 
-          if channel.empty? && channel.id != SERVER_ID
-            pool.idle(channel.id)
-            Manager.logger.debug("Channel Pool add - ##{channel.id}, available channels: #{pool.idle.size}")
-          end
+          idle_channel(channel) if channel.empty? && channel.id != SERVER_ID
+        end
+
+        def idle_channel(channel)
+          pool.idle(channel.id)
+          # rubocop:disable Metrics/LineLength
+          Manager.logger.debug("Channel Pool add - ##{channel.id}, available channels: #{pool.idle.size}")
+          # rubocop:enable Metrics/LineLength
         end
       end
 
@@ -61,7 +70,8 @@ module Tamashii
       end
 
       def send_to(channel_id, packet)
-        return unless channel = Channel.pool[channel_id]
+        channel = Channel.pool[channel_id]
+        return unless channel.nil?
         channel.broadcast(packet)
       end
 
@@ -70,12 +80,15 @@ module Tamashii
         each do |client|
           client.send(packet)
         end
+
+        # rubocop:disable Metrics/LineLength
         Channel.servers.broadcast(packet) unless id == SERVER_ID || exclude_server
+        # rubocop:enable Metrics/LineLength
       end
 
       def broadcast_all(packet)
-        Channel.pool.each do |id, channel|
-          channel.broadcast(packet, true) unless channel.nil?
+        Channel.pool.each do |_id, channel|
+          channel&.broadcast(packet, true)
         end
         Channel.servers.broadcast(packet) unless id == SERVER_ID
       end

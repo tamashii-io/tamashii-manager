@@ -11,8 +11,4 @@ describe Tamashii::Manager do
   it "can get config" do
     expect(Tamashii::Manager.config).to be(Tamashii::Manager::Config)
   end
-
-  it "can get logger" do
-    expect(Tamashii::Manager.logger).to be_instance_of(Tamashii::Logger)
-  end
 end
