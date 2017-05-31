@@ -14,6 +14,11 @@ module Tamashii
         setup_heartbeat_timer
       end
 
+      def call(env)
+        setup_heartbeat_timer
+        super
+      end
+
       # NOTE: Move into Tamashii::Server maybe better
       def setup_heartbeat_timer
         @heartbeat_timer = @event_loop.timer(Config.heartbeat_interval) do
