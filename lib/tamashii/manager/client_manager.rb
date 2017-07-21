@@ -9,7 +9,7 @@ module Tamashii
         other.class_eval do
           class << self
             def accepted_clients
-              @accepted_clients ||= {}
+              @accepted_clients ||= Concurrent::Hash.new
             end
 
             def [](name)
@@ -20,6 +20,10 @@ module Tamashii
             def []=(name, client)
               return unless client.is_a?(Client)
               accepted_clients[name.to_s] = client
+            end
+
+            def remove_client(name)
+              accepted_clients.delete(name)
             end
 
             def send_to(id, packet)
