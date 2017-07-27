@@ -78,7 +78,7 @@ module Tamashii
 
       def on_close
         Manager.logger.info("Client #{id} closed connection")
-        Client[id] = nil
+        Client.remove_client(id)
       end
 
       def emit_error(message)

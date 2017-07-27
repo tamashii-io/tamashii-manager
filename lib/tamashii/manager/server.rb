@@ -15,7 +15,6 @@ module Tamashii
       end
 
       def call(env)
-        setup_heartbeat_timer
         super
       end
 
