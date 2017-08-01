@@ -70,7 +70,7 @@ module Tamashii
         Manager.logger.debug("Receive Data: #{data}")
         return unless data.is_a?(Array)
         Tamashii::Resolver.resolve(Tamashii::Packet.load(data), client: self)
-      rescue AuthorizationError => reason
+      rescue Error::AuthorizationError => reason
         close_on_authorize_failed(reason)
       rescue => e
         on_message_error(e)
