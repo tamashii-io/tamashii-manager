@@ -14,8 +14,10 @@ module Tamashii
       end
 
       def create!
-        @idles << Channel.new(@ptr)
+        channel = Channel.new(@ptr)
+        @idles << channel
         @ptr += 1
+        channel
       end
 
       def idle(channel_id = nil)
