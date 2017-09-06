@@ -43,6 +43,10 @@ RSpec.describe Tamashii::Manager::Config do
   end
 
   describe ".env" do
+    before do
+      allow(ENV).to receive(:[]).with('RACK_ENV').and_return(nil)
+    end
+
     it "default is development" do
       expect(subject.env.development?).to be true
     end
