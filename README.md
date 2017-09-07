@@ -134,7 +134,7 @@ Tamashii::Manager::Client.send_to('example', '...')
 
 To get the source code
 
-    $ git clone git@github.com:5xRuby/tamashii-manager.git
+    $ git clone git@github.com:tamashii-io/tamashii-manager.git
 
 Initialize the development environment
 
