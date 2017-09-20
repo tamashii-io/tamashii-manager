@@ -24,6 +24,10 @@ module Tamashii
           @event_loop.post { Client.accepted_clients.values.map(&:beat) }
         end
       end
+
+      def inspect
+        "Tamashii::Manager::Server v#{VERSION}"
+      end
     end
   end
 end
