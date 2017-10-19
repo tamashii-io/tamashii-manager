@@ -63,6 +63,7 @@ module Tamashii
       end
 
       def on_open
+        Client.ensure_heartbeat_enabled(@event_loop)
         Manager.logger.info("Client #{id} is ready")
       end
 

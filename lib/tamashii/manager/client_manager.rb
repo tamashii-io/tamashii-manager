@@ -29,6 +29,12 @@ module Tamashii
             def send_to(id, packet)
               Manager.server.pubsub.send_to(id, packet)
             end
+
+            def ensure_heartbeat_enabled(event_loop)
+              @heartbeat_timer = event_loop.timer(Config.heartbeat_interval) do
+                event_loop.post { accepted_clients.values.map(&:beat) }
+              end
+            end
           end
         end
       end
