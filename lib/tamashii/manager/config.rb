@@ -52,7 +52,15 @@ module Tamashii
 
       def log_level(level = nil)
         return Manager.logger.level if level.nil?
+        self.log_level = level
+      end
+
+      # TODO: refactor this weird configuration
+      # We need this because log_level is not a REAL existing variable
+      def log_level=(level)
         Manager.logger.level = level
+        # TODO: forwarding to server, or unify loggers
+        Tamashii::Server.logger.level = level
       end
 
       def env(env = nil)
