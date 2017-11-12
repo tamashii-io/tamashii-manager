@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'tamashii/common'
-require 'tamashii/configurable'
+require 'tamashii/config'
 
 module Tamashii
   module Manager
@@ -18,7 +18,7 @@ module Tamashii
 
         def method_missing(name, *args, &block)
           # rubocop:disable Metrics/LineLength
-          return instance.send(name, *args, &block) if instance.class.exist?(name)
+          return instance.send(name, *args, &block) if instance.respond_to?(name)
           # rubocop:enable Metrics/LineLength
           super
         end
@@ -28,21 +28,13 @@ module Tamashii
 
       AUTH_TYPES = %i[none token].freeze
 
-      register :auth_type, :none
-      register :token, nil
-      register :log_file, STDOUT
-      register :log_level, Logger::INFO
-      register :env, nil
-      register :heartbeat_interval, 3
-      register :port, 3000
-
-      def [](key)
-        config(key)
-      end
-
-      def []=(key, value)
-        config(key, value)
-      end
+      config :auth_type, default: :none
+      config :token, default: nil
+      config :log_file, default: STDOUT
+      config :log_level, default: Logger::INFO
+      config :env, default: nil
+      config :heartbeat_interval, default: 3
+      config :port, default: 3000
 
       def auth_type(type = nil)
         return self[:auth_type] if type.nil?

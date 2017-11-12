@@ -1,4 +1,5 @@
-# coding: utf-8
+# frozen_string_literal: true
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'tamashii/manager/version'
@@ -34,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "rack"
   spec.add_runtime_dependency "tamashii"
   spec.add_runtime_dependency "tamashii-common"
+  spec.add_runtime_dependency "tamashii-config"
   spec.add_runtime_dependency "websocket-driver"
   spec.add_runtime_dependency "nio4r"
 
