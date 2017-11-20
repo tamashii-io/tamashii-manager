@@ -106,7 +106,7 @@ Use the `call` method in Resolver function to handle incoming packets.
 ```ruby
 # app/tamashii/rails_hook_for_tamashii.rb
 
-class RailsHookForTamashii < Tamashii::Hook
+class RailsHookForTamashii
   def initialize(*args)
     super
     @client = @env[:client]
