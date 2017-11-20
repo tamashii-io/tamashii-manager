@@ -2,6 +2,7 @@
 
 require 'tamashii/server'
 require 'tamashii/common'
+require 'tamashii/hookable'
 require 'tamashii/manager/version'
 
 require 'tamashii/manager/subscription'
@@ -39,3 +40,7 @@ end
 Tamashii::Resolver.default_handler Tamashii::Manager::Handler::Broadcaster
 Tamashii::Resolver.handle Tamashii::Type::AUTH_TOKEN, Tamashii::Manager::Authorization
 # rubocop:enable Metrics/LineLength
+
+Tamashii::Hook.after(:config) do |config|
+  config.register(:manager, Tamashii::Manager.config)
+end
